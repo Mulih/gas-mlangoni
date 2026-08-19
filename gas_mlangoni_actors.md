@@ -19,13 +19,13 @@
 | **OMC / Bulk Distributor** | External, secondary | Data product / dashboard (not core app) | Consumes anonymized H3 demand data from D4. Not part of the transactional flow at all — keep this firmly separated in your architecture |
 | **ODPC (Data Protection)** | Non-interactive | N/A | Not an actor — a compliance constraint on how D1/D4 are designed and exported |
 
-**Design implication:** Only 6 of these are actors your core transactional system talks to in real time (Customer, Rider, Vendor, Admin, Safety Agent, Daraja). EPRA, ODPC, and OMC are constraints/consumers, not participants in the live workflow — don't let them creep into your core service logic.
+**Design implication:** Only 6 of these are actors the core transactional system talks to in real time (Customer, Rider, Vendor, Admin, Safety Agent, Daraja). EPRA, ODPC, and OMC are constraints/consumers, not participants in the live workflow — can't let them creep into our core service logic.
 
 ---
 
 ## 2. Use Case Catalog
 
-Each use case includes the failure paths your original spec didn't cover — these are what actually determine your state machine design later.
+Each use case includes the failure paths the original spec didn't cover — these are what actually determine the state machine design later.
 
 ### A. Registration & Onboarding
 
