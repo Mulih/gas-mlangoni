@@ -11,3 +11,12 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Customer {
+  id        String    @id @default(uuid())
+  phone     String    @unique
+  name      String?
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@map("customers")
+}
