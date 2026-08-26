@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: gasmlangoni
+      POSTGRES_PASSWORD: localdev
+      POSTGRES_DB: gasmlangoni
+    ports:
+      - "5432:5432"
