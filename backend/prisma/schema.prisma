@@ -18,5 +18,54 @@ model Customer {
   name      String?
   createdAt DateTime  @default(now()) @map("created_at")
 
+  addresses  Address[]
+
   @@map("customers")
+}
+
+// One delivery address belonging to a customer. A customer can have more
+// than one (home, office, etc.), so this is its own table rather than
+// columns bolted onto Customer - that's what makes it a one-to-many
+// relationship instead of a one-to-one
+model Address {
+  // Same UUID primary key pattern as Customer, and the same reasoning:
+  // can be generated before the row is inserted, and doesn't reveal how
+  // many addresses exist by its value (unlike a sequential integer).
+  id  String  @id @default(uuid())
+
+  // The actual foreign key column stored in the database - this is a
+  // plain string colunm holding the id of the Customer this address
+  // belongs to. Nothing special about it on its own; the next field is
+  // what turns it into an enforced relationship.
+  customerId  String @map("customer_id")
+
+  // The relation field. This does NOT create a column in the databse -
+  // it tells Prisma how to link Address to Customer so your code can
+  // write `address.customer.phone` instead of a manual second query and 
+  // it tell Postgres to enforce the relationship: `fields: [customerId]`
+  // is the column on THIS model, `references: [id]` is the column on
+  // Customer it must match. Postgres will now reject and Address row
+  // whose customerId doesn't correspond to a real Customer.
+  customer Customer @relation(fields: [customerId], references: [id])
+
+  // Straight from the registration use case: Kentan urban addressing is
+  //estate name + a GPS pin, not a Western-styyle postal address - so
+  // that's what we store not a generic street address field that
+  // wouldn't actually match how anyone will fill this in.
+  estateName  String  @map("estate_name")
+  gpsLat      Float   @map("gps_lat")
+  gpsLng      Float   @map("gps_lng")
+
+
+// Speeds up the single most common query on this table - "find actually
+// addresses belonging to this customer" - by letting Postgres jump
+ // straight to mathcing rows instead of scanning the whole table.
+ // Without this, customer_id has a foreign key constraint (enforcing
+ // correctness) but no index (enforcing speed) - two separate things
+ // that are easy to mix up as one.
+ @@index([customerId])
+
+  // Same snake_case-table-name convention as Customer - keeps the actual
+  // SQL looking like normal SQL, not like JavaScript.
+  @@map("addresses")
 }
