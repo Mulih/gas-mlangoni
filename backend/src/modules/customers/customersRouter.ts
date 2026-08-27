@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { prisma } from "../../lib/prisma";
 import { validate } from "../../middleware/validate";
-import { createCustomerSchema } from "./customersSchema";
+import { createCustomerSchema, createAddressSchema } from "./customersSchema";
 
 export const customersRouter = Router();
 
@@ -36,9 +36,12 @@ customersRouter.get("/:customerId", async (req, res) => {
 // customer, Nestedunder /customers/:customerId because an address only
 // ever makes sense attached to the customer that owns it - it isn't a 
 // standalone resource on its own.
-customersRouter.post("/:customerId/addresses", async (req, res) => {
-    const { customerId } = req.params;
-    const { estateName, gpsLat, gpsLng } = req.body;
+customersRouter.post<{ customerId: string }>(
+    "/:customerId/addresses", 
+    validate(createAddressSchema),
+    async (req, res) => {
+      const { customerId } = req.params;
+      const { estateName, gpsLat, gpsLng } = req.body;
 
     // Same "just enough to prove it works" validation as the Customer route
     // - a ral validation layer would be more robust, but this is just a demo.
