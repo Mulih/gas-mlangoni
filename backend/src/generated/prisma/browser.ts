@@ -27,3 +27,8 @@ export type Customer = Prisma.CustomerModel
  * 
  */
 export type Address = Prisma.AddressModel
+/**
+ * Model Vendor
+ * 
+ */
+export type Vendor = Prisma.VendorModel

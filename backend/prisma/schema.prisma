@@ -69,3 +69,40 @@ model Address {
   // SQL looking like normal SQL, not like JavaScript.
   @@map("addresses")
 }
+
+// A licensed LPG dealer/depot. Distinct from Customer and Rider because
+// its job is completely different: stocking cylinders and getting
+// verified against EPRA's liccensing requirement, not ordering ordering
+// delivering anything.
+model Vendor {
+  id           String  @id @default(uuid())
+  businessName String  @map("business_name")
+
+  // Optional: a vendor can exist in a "just signed up, hasn't submitted
+  // a permit yet" state, so this can't be required at creation time.
+  epraPermitNumber  String? @map("epra_permit_number")
+
+  // This is an enum, not a plain string, first one in the schema. An 
+  // enum restricts this column, at the database level, to only the exact
+  // values defined below. typos or wrong case become physically impossible 
+  // to store, not just discouraged by convention
+  permitStatus PermitStatus @default(PENDING) @map("permit_status")
+
+  // Nullable because a PENDING vendor has no expiry date yet. One only
+  // gets set once a real permit has actually been reviewed.
+  permitExpiry DateTime? @map("permit_expiry")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("vendors")
+}
+
+// Referenced by Vendor above. There is no live verification API, so this status 
+// is always set by a human admin reviewing an uploaded document, never automatically.
+// PENDING is the only calid starting state, matching the @default above.
+enum PermitStatus {
+  PENDING
+  VERIFIED 
+  REJECTED
+  EXPIRED
+}
