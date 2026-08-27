@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { prisma } from "../../lib/prisma";
+import { validate } from "../../middleware/validate";
+import { createCustomerSchema } from "./customersSchema";
 
 export const customersRouter = Router();
 
@@ -58,7 +60,7 @@ customersRouter.post("/:customerId/addresses", async (req, res) => {
     res.status(201).json(address);
 })
 
-customersRouter.post("/", async (req, res) => {
+customersRouter.post("/", validate(createCustomerSchema), async (req, res) => {
     const { phone, name } = req.body;
 
     if (typeof phone !== "string" || phone.length === 0) {
