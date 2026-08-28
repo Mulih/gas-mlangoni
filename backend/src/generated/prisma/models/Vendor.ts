@@ -190,6 +190,7 @@ export type VendorWhereInput = {
   permitStatus?: Prisma.EnumPermitStatusFilter<"Vendor"> | $Enums.PermitStatus
   permitExpiry?: Prisma.DateTimeNullableFilter<"Vendor"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
+  inventory?: Prisma.InventoryStockListRelationFilter
 }
 
 export type VendorOrderByWithRelationInput = {
@@ -199,6 +200,7 @@ export type VendorOrderByWithRelationInput = {
   permitStatus?: Prisma.SortOrder
   permitExpiry?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  inventory?: Prisma.InventoryStockOrderByRelationAggregateInput
 }
 
 export type VendorWhereUniqueInput = Prisma.AtLeast<{
@@ -211,6 +213,7 @@ export type VendorWhereUniqueInput = Prisma.AtLeast<{
   permitStatus?: Prisma.EnumPermitStatusFilter<"Vendor"> | $Enums.PermitStatus
   permitExpiry?: Prisma.DateTimeNullableFilter<"Vendor"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Vendor"> | Date | string
+  inventory?: Prisma.InventoryStockListRelationFilter
 }, "id">
 
 export type VendorOrderByWithAggregationInput = {
@@ -244,6 +247,7 @@ export type VendorCreateInput = {
   permitStatus?: $Enums.PermitStatus
   permitExpiry?: Date | string | null
   createdAt?: Date | string
+  inventory?: Prisma.InventoryStockCreateNestedManyWithoutVendorInput
 }
 
 export type VendorUncheckedCreateInput = {
@@ -253,6 +257,7 @@ export type VendorUncheckedCreateInput = {
   permitStatus?: $Enums.PermitStatus
   permitExpiry?: Date | string | null
   createdAt?: Date | string
+  inventory?: Prisma.InventoryStockUncheckedCreateNestedManyWithoutVendorInput
 }
 
 export type VendorUpdateInput = {
@@ -262,6 +267,7 @@ export type VendorUpdateInput = {
   permitStatus?: Prisma.EnumPermitStatusFieldUpdateOperationsInput | $Enums.PermitStatus
   permitExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  inventory?: Prisma.InventoryStockUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorUncheckedUpdateInput = {
@@ -271,6 +277,7 @@ export type VendorUncheckedUpdateInput = {
   permitStatus?: Prisma.EnumPermitStatusFieldUpdateOperationsInput | $Enums.PermitStatus
   permitExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  inventory?: Prisma.InventoryStockUncheckedUpdateManyWithoutVendorNestedInput
 }
 
 export type VendorCreateManyInput = {
@@ -327,6 +334,11 @@ export type VendorMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
+export type VendorScalarRelationFilter = {
+  is?: Prisma.VendorWhereInput
+  isNot?: Prisma.VendorWhereInput
+}
+
 export type EnumPermitStatusFieldUpdateOperationsInput = {
   set?: $Enums.PermitStatus
 }
@@ -335,6 +347,101 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type VendorCreateNestedOneWithoutInventoryInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutInventoryInput, Prisma.VendorUncheckedCreateWithoutInventoryInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutInventoryInput
+  connect?: Prisma.VendorWhereUniqueInput
+}
+
+export type VendorUpdateOneRequiredWithoutInventoryNestedInput = {
+  create?: Prisma.XOR<Prisma.VendorCreateWithoutInventoryInput, Prisma.VendorUncheckedCreateWithoutInventoryInput>
+  connectOrCreate?: Prisma.VendorCreateOrConnectWithoutInventoryInput
+  upsert?: Prisma.VendorUpsertWithoutInventoryInput
+  connect?: Prisma.VendorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VendorUpdateToOneWithWhereWithoutInventoryInput, Prisma.VendorUpdateWithoutInventoryInput>, Prisma.VendorUncheckedUpdateWithoutInventoryInput>
+}
+
+export type VendorCreateWithoutInventoryInput = {
+  id?: string
+  businessName: string
+  epraPermitNumber?: string | null
+  permitStatus?: $Enums.PermitStatus
+  permitExpiry?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type VendorUncheckedCreateWithoutInventoryInput = {
+  id?: string
+  businessName: string
+  epraPermitNumber?: string | null
+  permitStatus?: $Enums.PermitStatus
+  permitExpiry?: Date | string | null
+  createdAt?: Date | string
+}
+
+export type VendorCreateOrConnectWithoutInventoryInput = {
+  where: Prisma.VendorWhereUniqueInput
+  create: Prisma.XOR<Prisma.VendorCreateWithoutInventoryInput, Prisma.VendorUncheckedCreateWithoutInventoryInput>
+}
+
+export type VendorUpsertWithoutInventoryInput = {
+  update: Prisma.XOR<Prisma.VendorUpdateWithoutInventoryInput, Prisma.VendorUncheckedUpdateWithoutInventoryInput>
+  create: Prisma.XOR<Prisma.VendorCreateWithoutInventoryInput, Prisma.VendorUncheckedCreateWithoutInventoryInput>
+  where?: Prisma.VendorWhereInput
+}
+
+export type VendorUpdateToOneWithWhereWithoutInventoryInput = {
+  where?: Prisma.VendorWhereInput
+  data: Prisma.XOR<Prisma.VendorUpdateWithoutInventoryInput, Prisma.VendorUncheckedUpdateWithoutInventoryInput>
+}
+
+export type VendorUpdateWithoutInventoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  epraPermitNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  permitStatus?: Prisma.EnumPermitStatusFieldUpdateOperationsInput | $Enums.PermitStatus
+  permitExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type VendorUncheckedUpdateWithoutInventoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  businessName?: Prisma.StringFieldUpdateOperationsInput | string
+  epraPermitNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  permitStatus?: Prisma.EnumPermitStatusFieldUpdateOperationsInput | $Enums.PermitStatus
+  permitExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type VendorCountOutputType
+ */
+
+export type VendorCountOutputType = {
+  inventory: number
+}
+
+export type VendorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  inventory?: boolean | VendorCountOutputTypeCountInventoryArgs
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VendorCountOutputType
+   */
+  select?: Prisma.VendorCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * VendorCountOutputType without action
+ */
+export type VendorCountOutputTypeCountInventoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InventoryStockWhereInput
+}
 
 
 export type VendorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -344,6 +451,8 @@ export type VendorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   permitStatus?: boolean
   permitExpiry?: boolean
   createdAt?: boolean
+  inventory?: boolean | Prisma.Vendor$inventoryArgs<ExtArgs>
+  _count?: boolean | Prisma.VendorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vendor"]>
 
 export type VendorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -374,10 +483,18 @@ export type VendorSelectScalar = {
 }
 
 export type VendorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessName" | "epraPermitNumber" | "permitStatus" | "permitExpiry" | "createdAt", ExtArgs["result"]["vendor"]>
+export type VendorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  inventory?: boolean | Prisma.Vendor$inventoryArgs<ExtArgs>
+  _count?: boolean | Prisma.VendorCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type VendorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type VendorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $VendorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Vendor"
-  objects: {}
+  objects: {
+    inventory: Prisma.$InventoryStockPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     businessName: string
@@ -779,6 +896,7 @@ readonly fields: VendorFieldRefs;
  */
 export interface Prisma__VendorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  inventory<T extends Prisma.Vendor$inventoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vendor$inventoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InventoryStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -831,6 +949,10 @@ export type VendorFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
+  /**
    * Filter, which Vendor to fetch.
    */
   where: Prisma.VendorWhereUniqueInput
@@ -849,6 +971,10 @@ export type VendorFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
+  /**
    * Filter, which Vendor to fetch.
    */
   where: Prisma.VendorWhereUniqueInput
@@ -866,6 +992,10 @@ export type VendorFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Vendor
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
   /**
    * Filter, which Vendor to fetch.
    */
@@ -915,6 +1045,10 @@ export type VendorFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
+  /**
    * Filter, which Vendor to fetch.
    */
   where?: Prisma.VendorWhereInput
@@ -962,6 +1096,10 @@ export type VendorFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Vendor
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
   /**
    * Filter, which Vendors to fetch.
    */
@@ -1011,6 +1149,10 @@ export type VendorCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
+  /**
    * The data needed to create a Vendor.
    */
   data: Prisma.XOR<Prisma.VendorCreateInput, Prisma.VendorUncheckedCreateInput>
@@ -1058,6 +1200,10 @@ export type VendorUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Vendor
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
   /**
    * The data needed to update a Vendor.
    */
@@ -1125,6 +1271,10 @@ export type VendorUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
+  /**
    * The filter to search for the Vendor to update in case it exists.
    */
   where: Prisma.VendorWhereUniqueInput
@@ -1151,6 +1301,10 @@ export type VendorDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
+  /**
    * Filter which Vendor to delete.
    */
   where: Prisma.VendorWhereUniqueInput
@@ -1171,6 +1325,30 @@ export type VendorDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * Vendor.inventory
+ */
+export type Vendor$inventoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InventoryStock
+   */
+  select?: Prisma.InventoryStockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InventoryStock
+   */
+  omit?: Prisma.InventoryStockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InventoryStockInclude<ExtArgs> | null
+  where?: Prisma.InventoryStockWhereInput
+  orderBy?: Prisma.InventoryStockOrderByWithRelationInput | Prisma.InventoryStockOrderByWithRelationInput[]
+  cursor?: Prisma.InventoryStockWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InventoryStockScalarFieldEnum | Prisma.InventoryStockScalarFieldEnum[]
+}
+
+/**
  * Vendor without action
  */
 export type VendorDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1182,4 +1360,8 @@ export type VendorDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Vendor
    */
   omit?: Prisma.VendorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VendorInclude<ExtArgs> | null
 }

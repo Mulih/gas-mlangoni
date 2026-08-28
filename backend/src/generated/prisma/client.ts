@@ -54,3 +54,13 @@ export type Address = Prisma.AddressModel
  * 
  */
 export type Vendor = Prisma.VendorModel
+/**
+ * Model CylinderPrice
+ * 
+ */
+export type CylinderPrice = Prisma.CylinderPriceModel
+/**
+ * Model InventoryStock
+ * 
+ */
+export type InventoryStock = Prisma.InventoryStockModel

@@ -11,4 +11,6 @@
 export type * from './models/Customer'
 export type * from './models/Address'
 export type * from './models/Vendor'
+export type * from './models/CylinderPrice'
+export type * from './models/InventoryStock'
 export type * from './commonInputTypes'

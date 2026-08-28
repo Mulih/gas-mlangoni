@@ -399,7 +399,9 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Customer: 'Customer',
   Address: 'Address',
-  Vendor: 'Vendor'
+  Vendor: 'Vendor',
+  CylinderPrice: 'CylinderPrice',
+  InventoryStock: 'InventoryStock'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "customer" | "address" | "vendor"
+    modelProps: "customer" | "address" | "vendor" | "cylinderPrice" | "inventoryStock"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -641,6 +643,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CylinderPrice: {
+      payload: Prisma.$CylinderPricePayload<ExtArgs>
+      fields: Prisma.CylinderPriceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CylinderPriceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CylinderPriceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>
+        }
+        findFirst: {
+          args: Prisma.CylinderPriceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CylinderPriceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>
+        }
+        findMany: {
+          args: Prisma.CylinderPriceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>[]
+        }
+        create: {
+          args: Prisma.CylinderPriceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>
+        }
+        createMany: {
+          args: Prisma.CylinderPriceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CylinderPriceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>[]
+        }
+        delete: {
+          args: Prisma.CylinderPriceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>
+        }
+        update: {
+          args: Prisma.CylinderPriceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>
+        }
+        deleteMany: {
+          args: Prisma.CylinderPriceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CylinderPriceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CylinderPriceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>[]
+        }
+        upsert: {
+          args: Prisma.CylinderPriceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CylinderPricePayload>
+        }
+        aggregate: {
+          args: Prisma.CylinderPriceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCylinderPrice>
+        }
+        groupBy: {
+          args: Prisma.CylinderPriceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CylinderPriceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CylinderPriceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CylinderPriceCountAggregateOutputType> | number
+        }
+      }
+    }
+    InventoryStock: {
+      payload: Prisma.$InventoryStockPayload<ExtArgs>
+      fields: Prisma.InventoryStockFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InventoryStockFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InventoryStockFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>
+        }
+        findFirst: {
+          args: Prisma.InventoryStockFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InventoryStockFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>
+        }
+        findMany: {
+          args: Prisma.InventoryStockFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>[]
+        }
+        create: {
+          args: Prisma.InventoryStockCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>
+        }
+        createMany: {
+          args: Prisma.InventoryStockCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InventoryStockCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>[]
+        }
+        delete: {
+          args: Prisma.InventoryStockDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>
+        }
+        update: {
+          args: Prisma.InventoryStockUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>
+        }
+        deleteMany: {
+          args: Prisma.InventoryStockDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InventoryStockUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InventoryStockUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>[]
+        }
+        upsert: {
+          args: Prisma.InventoryStockUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InventoryStockPayload>
+        }
+        aggregate: {
+          args: Prisma.InventoryStockAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInventoryStock>
+        }
+        groupBy: {
+          args: Prisma.InventoryStockGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InventoryStockGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InventoryStockCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InventoryStockCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -711,6 +861,27 @@ export const VendorScalarFieldEnum = {
 } as const
 
 export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
+
+
+export const CylinderPriceScalarFieldEnum = {
+  id: 'id',
+  brand: 'brand',
+  size: 'size',
+  price: 'price'
+} as const
+
+export type CylinderPriceScalarFieldEnum = (typeof CylinderPriceScalarFieldEnum)[keyof typeof CylinderPriceScalarFieldEnum]
+
+
+export const InventoryStockScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  brand: 'brand',
+  size: 'size',
+  quantity: 'quantity'
+} as const
+
+export type InventoryStockScalarFieldEnum = (typeof InventoryStockScalarFieldEnum)[keyof typeof InventoryStockScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -796,6 +967,20 @@ export type EnumPermitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'PermitStatus[]'
  */
 export type ListEnumPermitStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PermitStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -966,6 +1151,8 @@ export type GlobalOmitConfig = {
   customer?: Prisma.CustomerOmit
   address?: Prisma.AddressOmit
   vendor?: Prisma.VendorOmit
+  cylinderPrice?: Prisma.CylinderPriceOmit
+  inventoryStock?: Prisma.InventoryStockOmit
 }
 
 /* Types for Logging */

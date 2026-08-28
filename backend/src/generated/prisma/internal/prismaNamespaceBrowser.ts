@@ -53,7 +53,9 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Customer: 'Customer',
   Address: 'Address',
-  Vendor: 'Vendor'
+  Vendor: 'Vendor',
+  CylinderPrice: 'CylinderPrice',
+  InventoryStock: 'InventoryStock'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -103,6 +105,27 @@ export const VendorScalarFieldEnum = {
 } as const
 
 export type VendorScalarFieldEnum = (typeof VendorScalarFieldEnum)[keyof typeof VendorScalarFieldEnum]
+
+
+export const CylinderPriceScalarFieldEnum = {
+  id: 'id',
+  brand: 'brand',
+  size: 'size',
+  price: 'price'
+} as const
+
+export type CylinderPriceScalarFieldEnum = (typeof CylinderPriceScalarFieldEnum)[keyof typeof CylinderPriceScalarFieldEnum]
+
+
+export const InventoryStockScalarFieldEnum = {
+  id: 'id',
+  vendorId: 'vendorId',
+  brand: 'brand',
+  size: 'size',
+  quantity: 'quantity'
+} as const
+
+export type InventoryStockScalarFieldEnum = (typeof InventoryStockScalarFieldEnum)[keyof typeof InventoryStockScalarFieldEnum]
 
 
 export const SortOrder = {

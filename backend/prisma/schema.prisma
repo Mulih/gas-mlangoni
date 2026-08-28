@@ -132,7 +132,7 @@ model InventoryStock {
   vendor    Vendor @relation(fields: [vendorId], references: [id])
   brand     String
   size      String
-  quantity  int    @default(0)
+  quantity  Int    @default(0)
 
   @@unique([vendorId, brand, size])
   @@index([vendorId])
