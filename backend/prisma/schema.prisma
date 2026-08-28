@@ -106,3 +106,16 @@ enum PermitStatus {
   REJECTED
   EXPIRED
 }
+
+// The platform-wide price for a given cylinder brand+size. Set once,
+// by the platform, not by individual vendors. This is to avoid vendors
+// undercutting or overcharging.
+model CylinderPrice {
+  id    String @id @default(uuid())
+  brand String
+  size  String
+  price Decimal
+  @@unique([brand, size])
+
+  @@map("cylinder_prices")
+}
