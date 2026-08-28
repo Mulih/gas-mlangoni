@@ -94,6 +94,8 @@ model Vendor {
 
   createdAt DateTime @default(now()) @map("created_at")
 
+  inventory InventoryStock[]
+
   @@map("vendors")
 }
 
@@ -118,4 +120,21 @@ model CylinderPrice {
   @@unique([brand, size])
 
   @@map("cylinder_prices")
+}
+
+// Tracks how many cylinders for a given brand+size a vendor has in stock,
+// and what they charge for it. One row per (vendor, brand, size)
+// combination. We are tracking levels, not individual
+// cylinders
+model InventoryStock {
+  id        String @id @default(uuid())
+  vendorId  String @map("vendor_id")
+  vendor    Vendor @relation(fields: [vendorId], references: [id])
+  brand     String
+  size      String
+  quantity  int    @default(0)
+
+  @@unique([vendorId, brand, size])
+  @@index([vendorId])
+  @@map("inventory_stock")
 }
