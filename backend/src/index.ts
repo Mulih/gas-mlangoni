@@ -1,5 +1,7 @@
 import express from "express";
 import { customersRouter } from "./modules/customers/customersRouter";
+import { vendorsRouter } from "./modules/vendors/vendorsRouter";
+
 
 const app = express();
 const port = 3000;
@@ -7,6 +9,7 @@ const port = 3000;
 
 app.use(express.json());
 app.use("/customers", customersRouter);
+app.use("/vendors", vendorsRouter);
 
 app.use(
     (err: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {
