@@ -116,7 +116,7 @@ model CylinderPrice {
   id    String @id @default(uuid())
   brand String
   size  String
-  price Decimal
+  price Decimal @db.Decimal(10, 2)
   @@unique([brand, size])
 
   @@map("cylinder_prices")
