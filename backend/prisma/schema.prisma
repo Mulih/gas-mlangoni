@@ -138,3 +138,29 @@ model InventoryStock {
   @@index([vendorId])
   @@map("inventory_stock")
 }
+
+// A delivery rider. Deliberately no relation to Order yet
+
+model Rider {
+  id    String @id @default(uuid())
+  name  String
+
+  // Unique for the same reason as Customer.phone: this is how a rider
+  // identifies themselves logging into the Rider App, so the database
+  // must refuse a duplicate, not just discourage one.
+  phone  String @unique
+
+  // Enum, not a plain string, same reasoning as PermitStatus. Dispatch
+  // logic (UC-08) will directly depend on this value to find the 
+  // nearest AVAILABLE rider," so a typo'd or invalid status here isn't 
+  // just messy data, it's a rider who silently never received a job.
+  status RiderStatus @default(OFFLINE)
+
+  @@map("riders")
+}
+
+enum RiderStatus {
+  OFFLINE
+  AVAILABLE
+  ON_DELIVERY
+}

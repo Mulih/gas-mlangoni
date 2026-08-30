@@ -17,3 +17,12 @@ export const PermitStatus = {
 } as const
 
 export type PermitStatus = (typeof PermitStatus)[keyof typeof PermitStatus]
+
+
+export const RiderStatus = {
+  OFFLINE: 'OFFLINE',
+  AVAILABLE: 'AVAILABLE',
+  ON_DELIVERY: 'ON_DELIVERY'
+} as const
+
+export type RiderStatus = (typeof RiderStatus)[keyof typeof RiderStatus]

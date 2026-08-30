@@ -233,6 +233,23 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type EnumRiderStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.RiderStatus | Prisma.EnumRiderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRiderStatusFilter<$PrismaModel> | $Enums.RiderStatus
+}
+
+export type EnumRiderStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RiderStatus | Prisma.EnumRiderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRiderStatusWithAggregatesFilter<$PrismaModel> | $Enums.RiderStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRiderStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRiderStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -452,6 +469,23 @@ export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedIntFilter<$PrismaModel>
   _max?: Prisma.NestedIntFilter<$PrismaModel>
+}
+
+export type NestedEnumRiderStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.RiderStatus | Prisma.EnumRiderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRiderStatusFilter<$PrismaModel> | $Enums.RiderStatus
+}
+
+export type NestedEnumRiderStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RiderStatus | Prisma.EnumRiderStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RiderStatus[] | Prisma.ListEnumRiderStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRiderStatusWithAggregatesFilter<$PrismaModel> | $Enums.RiderStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRiderStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRiderStatusFilter<$PrismaModel>
 }
 
 

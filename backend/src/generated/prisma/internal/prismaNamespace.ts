@@ -401,7 +401,8 @@ export const ModelName = {
   Address: 'Address',
   Vendor: 'Vendor',
   CylinderPrice: 'CylinderPrice',
-  InventoryStock: 'InventoryStock'
+  InventoryStock: 'InventoryStock',
+  Rider: 'Rider'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "customer" | "address" | "vendor" | "cylinderPrice" | "inventoryStock"
+    modelProps: "customer" | "address" | "vendor" | "cylinderPrice" | "inventoryStock" | "rider"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +792,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Rider: {
+      payload: Prisma.$RiderPayload<ExtArgs>
+      fields: Prisma.RiderFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RiderFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RiderFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>
+        }
+        findFirst: {
+          args: Prisma.RiderFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RiderFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>
+        }
+        findMany: {
+          args: Prisma.RiderFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>[]
+        }
+        create: {
+          args: Prisma.RiderCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>
+        }
+        createMany: {
+          args: Prisma.RiderCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RiderCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>[]
+        }
+        delete: {
+          args: Prisma.RiderDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>
+        }
+        update: {
+          args: Prisma.RiderUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>
+        }
+        deleteMany: {
+          args: Prisma.RiderDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RiderUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RiderUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>[]
+        }
+        upsert: {
+          args: Prisma.RiderUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RiderPayload>
+        }
+        aggregate: {
+          args: Prisma.RiderAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRider>
+        }
+        groupBy: {
+          args: Prisma.RiderGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RiderGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RiderCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RiderCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -882,6 +957,16 @@ export const InventoryStockScalarFieldEnum = {
 } as const
 
 export type InventoryStockScalarFieldEnum = (typeof InventoryStockScalarFieldEnum)[keyof typeof InventoryStockScalarFieldEnum]
+
+
+export const RiderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  phone: 'phone',
+  status: 'status'
+} as const
+
+export type RiderScalarFieldEnum = (typeof RiderScalarFieldEnum)[keyof typeof RiderScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -995,6 +1080,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RiderStatus'
+ */
+export type EnumRiderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiderStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RiderStatus[]'
+ */
+export type ListEnumRiderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RiderStatus[]'>
     
 
 /**
@@ -1153,6 +1252,7 @@ export type GlobalOmitConfig = {
   vendor?: Prisma.VendorOmit
   cylinderPrice?: Prisma.CylinderPriceOmit
   inventoryStock?: Prisma.InventoryStockOmit
+  rider?: Prisma.RiderOmit
 }
 
 /* Types for Logging */

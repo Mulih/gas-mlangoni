@@ -64,3 +64,8 @@ export type CylinderPrice = Prisma.CylinderPriceModel
  * 
  */
 export type InventoryStock = Prisma.InventoryStockModel
+/**
+ * Model Rider
+ * 
+ */
+export type Rider = Prisma.RiderModel
