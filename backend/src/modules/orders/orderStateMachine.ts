@@ -55,5 +55,28 @@ export class InvalidOrderTransitionError extends Error {
 }
 
 /**
+ * Checks a moving order from one status to another is allowed.
+ * Throws an error if it isn't, rather than returning false - an invalid
+ * transition is a bug in the calling code, not a normal outcome to
+ * silently handle, so it should be loud, not easy to accidentally
+ * ignore.
  * 
+ * Returs the matched transition (not just true/false) so the caller can
+ * check `.manual` and rejct. the call if it didn't come from the admin console.
+ * That check is the caller's responsibility, not this
+ * function's;
  */
+export function assertValidTransition(from: OrderStatus, to: OrderStatus): Transition {
+    const allowed = ORDER_TRANSITIONS[from].find((t) => t.to === to);
+    if (!allowed) {
+        throw new InvalidOrderTransitionError(from, to);
+    }
+    return allowed;
+}
+
+// True for a status with no outgoing transitions at all - used later to
+// e.g. refuse any further action on an order once it's COMPLETED,
+// CANCELLED, or REFUNDED.
+export function isTerminal(status: OrderStatus): boolean {
+    return ORDER_TRANSITIONS[status].length === 0;
+}
