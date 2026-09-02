@@ -179,7 +179,7 @@ enum RiderStatus {
 model Order {
   id String @id @default(uuid())
 
-  cusomterId String   @map("customer_id")
+  customerId String   @map("customer_id")
   customer   Customer @relation(fields: [customerId], references: [id])
 
   vendorId  String @map("vendor_id")
@@ -224,7 +224,7 @@ enum OrderStatus {
   DISPATCH_TIMEOUT
   ASSIGNED 
   EN_ROUTE
-  AUDIT_IN_PROCESS
+  AUDIT_IN_PROESS
   AUDIT_FAILED
   DELIVERED
   PAYOUT_RELEASED

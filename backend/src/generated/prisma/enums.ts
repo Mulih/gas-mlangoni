@@ -26,3 +26,22 @@ export const RiderStatus = {
 } as const
 
 export type RiderStatus = (typeof RiderStatus)[keyof typeof RiderStatus]
+
+
+export const OrderStatus = {
+  PLACED: 'PLACED',
+  ESCROW_HELD: 'ESCROW_HELD',
+  DISPATCHING: 'DISPATCHING',
+  DISPATCH_TIMEOUT: 'DISPATCH_TIMEOUT',
+  ASSIGNED: 'ASSIGNED',
+  EN_ROUTE: 'EN_ROUTE',
+  AUDIT_IN_PROCESS: 'AUDIT_IN_PROCESS',
+  AUDIT_FAILED: 'AUDIT_FAILED',
+  DELIVERED: 'DELIVERED',
+  PAYOUT_RELEASED: 'PAYOUT_RELEASED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]

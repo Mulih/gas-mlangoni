@@ -174,6 +174,7 @@ export type RiderWhereInput = {
   name?: Prisma.StringFilter<"Rider"> | string
   phone?: Prisma.StringFilter<"Rider"> | string
   status?: Prisma.EnumRiderStatusFilter<"Rider"> | $Enums.RiderStatus
+  orders?: Prisma.OrderListRelationFilter
 }
 
 export type RiderOrderByWithRelationInput = {
@@ -181,6 +182,7 @@ export type RiderOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  orders?: Prisma.OrderOrderByRelationAggregateInput
 }
 
 export type RiderWhereUniqueInput = Prisma.AtLeast<{
@@ -191,6 +193,7 @@ export type RiderWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.RiderWhereInput | Prisma.RiderWhereInput[]
   name?: Prisma.StringFilter<"Rider"> | string
   status?: Prisma.EnumRiderStatusFilter<"Rider"> | $Enums.RiderStatus
+  orders?: Prisma.OrderListRelationFilter
 }, "id" | "phone">
 
 export type RiderOrderByWithAggregationInput = {
@@ -218,6 +221,7 @@ export type RiderCreateInput = {
   name: string
   phone: string
   status?: $Enums.RiderStatus
+  orders?: Prisma.OrderCreateNestedManyWithoutRiderInput
 }
 
 export type RiderUncheckedCreateInput = {
@@ -225,6 +229,7 @@ export type RiderUncheckedCreateInput = {
   name: string
   phone: string
   status?: $Enums.RiderStatus
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutRiderInput
 }
 
 export type RiderUpdateInput = {
@@ -232,6 +237,7 @@ export type RiderUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  orders?: Prisma.OrderUpdateManyWithoutRiderNestedInput
 }
 
 export type RiderUncheckedUpdateInput = {
@@ -239,6 +245,7 @@ export type RiderUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutRiderNestedInput
 }
 
 export type RiderCreateManyInput = {
@@ -283,10 +290,104 @@ export type RiderMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
 }
 
+export type RiderNullableScalarRelationFilter = {
+  is?: Prisma.RiderWhereInput | null
+  isNot?: Prisma.RiderWhereInput | null
+}
+
 export type EnumRiderStatusFieldUpdateOperationsInput = {
   set?: $Enums.RiderStatus
 }
 
+export type RiderCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.RiderCreateWithoutOrdersInput, Prisma.RiderUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.RiderCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.RiderWhereUniqueInput
+}
+
+export type RiderUpdateOneWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.RiderCreateWithoutOrdersInput, Prisma.RiderUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.RiderCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.RiderUpsertWithoutOrdersInput
+  disconnect?: Prisma.RiderWhereInput | boolean
+  delete?: Prisma.RiderWhereInput | boolean
+  connect?: Prisma.RiderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RiderUpdateToOneWithWhereWithoutOrdersInput, Prisma.RiderUpdateWithoutOrdersInput>, Prisma.RiderUncheckedUpdateWithoutOrdersInput>
+}
+
+export type RiderCreateWithoutOrdersInput = {
+  id?: string
+  name: string
+  phone: string
+  status?: $Enums.RiderStatus
+}
+
+export type RiderUncheckedCreateWithoutOrdersInput = {
+  id?: string
+  name: string
+  phone: string
+  status?: $Enums.RiderStatus
+}
+
+export type RiderCreateOrConnectWithoutOrdersInput = {
+  where: Prisma.RiderWhereUniqueInput
+  create: Prisma.XOR<Prisma.RiderCreateWithoutOrdersInput, Prisma.RiderUncheckedCreateWithoutOrdersInput>
+}
+
+export type RiderUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.RiderUpdateWithoutOrdersInput, Prisma.RiderUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.RiderCreateWithoutOrdersInput, Prisma.RiderUncheckedCreateWithoutOrdersInput>
+  where?: Prisma.RiderWhereInput
+}
+
+export type RiderUpdateToOneWithWhereWithoutOrdersInput = {
+  where?: Prisma.RiderWhereInput
+  data: Prisma.XOR<Prisma.RiderUpdateWithoutOrdersInput, Prisma.RiderUncheckedUpdateWithoutOrdersInput>
+}
+
+export type RiderUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+}
+
+export type RiderUncheckedUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+}
+
+
+/**
+ * Count Type RiderCountOutputType
+ */
+
+export type RiderCountOutputType = {
+  orders: number
+}
+
+export type RiderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  orders?: boolean | RiderCountOutputTypeCountOrdersArgs
+}
+
+/**
+ * RiderCountOutputType without action
+ */
+export type RiderCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RiderCountOutputType
+   */
+  select?: Prisma.RiderCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * RiderCountOutputType without action
+ */
+export type RiderCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
 
 
 export type RiderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -294,6 +395,8 @@ export type RiderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   name?: boolean
   phone?: boolean
   status?: boolean
+  orders?: boolean | Prisma.Rider$ordersArgs<ExtArgs>
+  _count?: boolean | Prisma.RiderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rider"]>
 
 export type RiderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -318,10 +421,18 @@ export type RiderSelectScalar = {
 }
 
 export type RiderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "status", ExtArgs["result"]["rider"]>
+export type RiderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  orders?: boolean | Prisma.Rider$ordersArgs<ExtArgs>
+  _count?: boolean | Prisma.RiderCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type RiderIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type RiderIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $RiderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Rider"
-  objects: {}
+  objects: {
+    orders: Prisma.$OrderPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
@@ -721,6 +832,7 @@ readonly fields: RiderFieldRefs;
  */
 export interface Prisma__RiderClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  orders<T extends Prisma.Rider$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Rider$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -771,6 +883,10 @@ export type RiderFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
+  /**
    * Filter, which Rider to fetch.
    */
   where: Prisma.RiderWhereUniqueInput
@@ -789,6 +905,10 @@ export type RiderFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
+  /**
    * Filter, which Rider to fetch.
    */
   where: Prisma.RiderWhereUniqueInput
@@ -806,6 +926,10 @@ export type RiderFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Rider
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
   /**
    * Filter, which Rider to fetch.
    */
@@ -855,6 +979,10 @@ export type RiderFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
+  /**
    * Filter, which Rider to fetch.
    */
   where?: Prisma.RiderWhereInput
@@ -902,6 +1030,10 @@ export type RiderFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Rider
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
   /**
    * Filter, which Riders to fetch.
    */
@@ -951,6 +1083,10 @@ export type RiderCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
+  /**
    * The data needed to create a Rider.
    */
   data: Prisma.XOR<Prisma.RiderCreateInput, Prisma.RiderUncheckedCreateInput>
@@ -998,6 +1134,10 @@ export type RiderUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Rider
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
   /**
    * The data needed to update a Rider.
    */
@@ -1065,6 +1205,10 @@ export type RiderUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
+  /**
    * The filter to search for the Rider to update in case it exists.
    */
   where: Prisma.RiderWhereUniqueInput
@@ -1091,6 +1235,10 @@ export type RiderDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
+  /**
    * Filter which Rider to delete.
    */
   where: Prisma.RiderWhereUniqueInput
@@ -1111,6 +1259,30 @@ export type RiderDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
+ * Rider.orders
+ */
+export type Rider$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
  * Rider without action
  */
 export type RiderDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1122,4 +1294,8 @@ export type RiderDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Rider
    */
   omit?: Prisma.RiderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RiderInclude<ExtArgs> | null
 }

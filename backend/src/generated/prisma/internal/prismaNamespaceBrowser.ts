@@ -56,7 +56,8 @@ export const ModelName = {
   Vendor: 'Vendor',
   CylinderPrice: 'CylinderPrice',
   InventoryStock: 'InventoryStock',
-  Rider: 'Rider'
+  Rider: 'Rider',
+  Order: 'Order'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -137,6 +138,21 @@ export const RiderScalarFieldEnum = {
 } as const
 
 export type RiderScalarFieldEnum = (typeof RiderScalarFieldEnum)[keyof typeof RiderScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  vendorId: 'vendorId',
+  riderId: 'riderId',
+  status: 'status',
+  deliveryMode: 'deliveryMode',
+  totalAmount: 'totalAmount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
 export const SortOrder = {

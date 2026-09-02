@@ -69,3 +69,8 @@ export type InventoryStock = Prisma.InventoryStockModel
  * 
  */
 export type Rider = Prisma.RiderModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
