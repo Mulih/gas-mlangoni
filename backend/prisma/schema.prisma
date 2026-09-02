@@ -20,6 +20,8 @@ model Customer {
 
   addresses  Address[]
 
+  orders Order[]
+
   @@map("customers")
 }
 
@@ -96,6 +98,8 @@ model Vendor {
 
   inventory InventoryStock[]
 
+  orders Order[]
+
   @@map("vendors")
 }
 
@@ -156,6 +160,8 @@ model Rider {
   // just messy data, it's a rider who silently never received a job.
   status RiderStatus @default(OFFLINE)
 
+  orders Order[]
+
   @@map("riders")
 }
 
@@ -163,4 +169,66 @@ enum RiderStatus {
   OFFLINE
   AVAILABLE
   ON_DELIVERY
+}
+
+// The center of the whole system - everything else exists to support an
+// Order. References three other tables: Customer and Vendor are
+// required (an order can't exist without someone ordering and someone
+// fulfilling it), Rider is optional, because and an order starts life
+// before any rider has been assigned to it.
+model Order {
+  id String @id @default(uuid())
+
+  cusomterId String   @map("customer_id")
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  vendorId  String @map("vendor_id")
+  vendor    Vendor @relation(fields: [vendorId], references: [id])
+
+  // The ? on the type makes this genuinely optional at the database
+  // level, not just "usually filled in" - an order in the PLACED status
+  // has no rider yet, and that has to be a legal, representable state.
+  riderId String? @map("rider_id")
+  Rider   Rider? @relation(fields: [riderId], references: [id])
+
+  // This is the order-state-machine document made real: 13 values, 
+  // matching the transition table exactly. Adding a 14th value here
+  // without updating that doc (and vice versa) is exactly the kind of
+  // drift we wrote a warning about in the doc itself - they have to
+  // change together, always.
+  status OrderStatus @default(PLACED)
+
+  deliveryMode String  @map("delivery_mode")
+
+  // Same explicit precision as CylinderPrice.price, for the same reason
+  // - this is real money, not a number Prisma should guess a size for.
+  totalAmount Decimal @map("total_amount") @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  // @updatedAt (not @default(now())) - Prisma will automatically rewrite
+  // this column every time the row changes, which is exactly what we 
+  // want for tracking "when did this order's status last change,"
+  // without writing that logic ourselves in ever single endpoint
+  // that touches that order
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([customerId])
+  @@index([vendorId])
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PLACED
+  ESCROW_HELD
+  DISPATCHING
+  DISPATCH_TIMEOUT
+  ASSIGNED 
+  EN_ROUTE
+  AUDIT_IN_PROCESS
+  AUDIT_FAILED
+  DELIVERED
+  PAYOUT_RELEASED
+  COMPLETED
+  CANCELLED
+  REFUNDED
 }
