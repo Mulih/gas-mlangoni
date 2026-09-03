@@ -78,5 +78,5 @@ export function assertValidTransition(from: OrderStatus, to: OrderStatus): Trans
 // e.g. refuse any further action on an order once it's COMPLETED,
 // CANCELLED, or REFUNDED.
 export function isTerminal(status: OrderStatus): boolean {
-    return ORDER_TRANSITIONS[status].length === 0;
+    return ORDER_TRANSITIONS[status].length === 0;                      
 }
