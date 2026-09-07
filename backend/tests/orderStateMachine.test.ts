@@ -34,13 +34,6 @@ describe("order state machine", () => {
         );
     });
 
-    it("rejects an invalid transition", () => {
-        // DISPATCHING can only got to ASSIGNED or DISPATCH_TIMEOUT - jumping
-        // straight to REFUNDED bypasses the whole escalation path we
-        // designed, and must be rejected the same as any other invalid move.
-        expect(() => assertValidTransition("DISPATCHING", "REFUNDED")).toThrow();
-    });
-
     it("rejects skipping the dispatch timeout escalation", () => {
         // DISPATCHING can only go to ASSIGNED or DISPATCH_TIMEOUT - jumping
         // straight to REFUNDED bypasses the whole escalation path we

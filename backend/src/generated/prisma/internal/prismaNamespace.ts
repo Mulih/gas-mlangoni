@@ -1049,6 +1049,8 @@ export const OrderScalarFieldEnum = {
   customerId: 'customerId',
   vendorId: 'vendorId',
   riderId: 'riderId',
+  brand: 'brand',
+  size: 'size',
   status: 'status',
   deliveryMode: 'deliveryMode',
   totalAmount: 'totalAmount',

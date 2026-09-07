@@ -196,6 +196,10 @@ model Order {
   // without updating that doc (and vice versa) is exactly the kind of
   // drift we wrote a warning about in the doc itself - they have to
   // change together, always.
+  brand String
+  size String
+
+  
   status OrderStatus @default(PLACED)
 
   deliveryMode String  @map("delivery_mode")
