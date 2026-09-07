@@ -3,6 +3,7 @@ import { customersRouter } from "./modules/customers/customersRouter";
 import { vendorsRouter } from "./modules/vendors/vendorsRouter";
 import { cylinderPricesRouter } from "./modules/cylinderPrices/cylinderPricesRouter";
 import { ridersRouter } from "./riders/ridersRouter";
+import { ordersRouter } from "./modules/orders/ordersRouter";
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use("/customers", customersRouter);
 app.use("/vendors", vendorsRouter);
 app.use("/cylinder-prices", cylinderPricesRouter);
 app.use("/riders", ridersRouter);
+app.use("/customers", ordersRouter);
 
 app.use(
     (err: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {

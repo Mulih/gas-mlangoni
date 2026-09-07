@@ -1,0 +1,58 @@
+import { Router } from "express";
+import { prisma } from "../../lib/prisma";
+import { validate } from "../../middleware/validate";
+import { createOrderSchema } from "./ordersSchemas";
+import { resolveOrderPricing, OrderPricingError } from "./orderPricing";
+
+export const ordersRouter = Router();
+
+// Nested under /customers':customerId, not standalone - an order always
+// belongs to the customer placing it, same reasoning as addresses being
+// nested under a customer rather than free-floating.
+ordersRouter.post<{ customerId: string }>(
+    "/:customersId/orders",
+    validate(createOrderSchema),
+    async (req, res) => {
+        const { customerId } = req.params;
+        const { vendorId, addressId, brand, size, deliveryMode } = req.body;
+
+        // The ownership check the schema itself can't enforce, flagged when
+        // we added addressId: confirm this address actually belongs to this
+        // customer, not just that it exists somewhere in the database.
+        const address = await prisma.address.findUnique({ where: { id: addressId } });
+        if (!address || address.customerId != customerId) {
+            return res.status(400).json({ error: "AddressId does not belong to this customer" });
+        }
+
+        // Pricing and stock, resolved entirely server-side
+        let totalAmount;
+        try {
+            ({ totalAmount } = await resolveOrderPricing(vendorId, brand, size));
+        } catch (err) {
+            if (err instanceof OrderPricingError) {
+                return res.status(400).json({ error: err.message });
+            }
+            // Anythin else is unexpected - let it be handled by
+            // the error handling middleware rather than swallowing it
+            // here
+            throw err;
+        }
+
+        const order = await prisma.order.create({
+            data: {
+                customerId,
+                vendorId,
+                addressId,
+                brand,
+                size,
+                deliveryMode,
+                totalAmount,
+                // status isn't set here - @default(PLACED) is the only legal
+                // starting state, same reasoningas every other enum default
+                // in this schema.
+            },
+        });
+
+        res.status(201).json(order);
+    },
+);
