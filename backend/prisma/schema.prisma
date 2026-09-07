@@ -67,6 +67,8 @@ model Address {
  // that are easy to mix up as one.
  @@index([customerId])
 
+ orders Order[]
+
   // Same snake_case-table-name convention as Customer - keeps the actual
   // SQL looking like normal SQL, not like JavaScript.
   @@map("addresses")
@@ -216,6 +218,12 @@ model Order {
   // without writing that logic ourselves in ever single endpoint
   // that touches that order
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Required, not optional like riderId - every order needs a delivery
+  // destination from the moment it's placed, unlike a rider who's only
+  // assigned later during dispatch.
+  addressId String  @map("address_id")
+  address   Address @relation(fields: [addressId], references: [id])
 
   @@index([customerId])
   @@index([vendorId])
