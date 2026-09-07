@@ -189,20 +189,21 @@ model Order {
   // level, not just "usually filled in" - an order in the PLACED status
   // has no rider yet, and that has to be a legal, representable state.
   riderId String? @map("rider_id")
-  Rider   Rider? @relation(fields: [riderId], references: [id])
+  rider   Rider? @relation(fields: [riderId], references: [id])
 
+  brand String
+  size String
   // This is the order-state-machine document made real: 13 values, 
   // matching the transition table exactly. Adding a 14th value here
   // without updating that doc (and vice versa) is exactly the kind of
   // drift we wrote a warning about in the doc itself - they have to
   // change together, always.
-  brand String
-  size String
+  
 
   
   status OrderStatus @default(PLACED)
 
-  deliveryMode String  @map("delivery_mode")
+  deliveryMode DeliveryMode  @map("delivery_mode")
 
   // Same explicit precision as CylinderPrice.price, for the same reason
   // - this is real money, not a number Prisma should guess a size for.
@@ -235,4 +236,9 @@ enum OrderStatus {
   COMPLETED
   CANCELLED
   REFUNDED
+}
+
+enum DeliveryMode {
+  ON_DEMAND
+  SCHEDULED
 }

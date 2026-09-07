@@ -45,3 +45,11 @@ export const OrderStatus = {
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const DeliveryMode = {
+  ON_DEMAND: 'ON_DEMAND',
+  SCHEDULED: 'SCHEDULED'
+} as const
+
+export type DeliveryMode = (typeof DeliveryMode)[keyof typeof DeliveryMode]
