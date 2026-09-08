@@ -9,3 +9,15 @@ export const createOrderSchema = z.object({
     size: z.string().min(1),
     deliveryMode: z.enum(["ON_DEMAND", "SCHEDULED"]),
 });
+
+// Every OrderStatus value, listed explicitly rather than derived from
+// the Prisma enum automatically - keeps schema.prisma, this file, and
+// the state-machine doc all requiring a human to update them together,
+// rather than one silently drifting from the others.
+export const updateOrderStatusSchema = z.object({
+    to: z.enum([
+        "PLACED", "ESCROW_HELD", "DISPATCHING", "DISPATCH_TIMEOUT", "ASSIGNED",
+        "EN_ROUTE", "AUDIT_IN_PROGRESS", "AUDIT_FAILED", "DELIVERED",
+        "PAYOUT_RELEASED", "COMPLETED", "CANCELLED", "REFUNDED",
+    ]),
+});
