@@ -15,7 +15,7 @@ app.use("/customers", customersRouter);
 app.use("/vendors", vendorsRouter);
 app.use("/cylinder-prices", cylinderPricesRouter);
 app.use("/riders", ridersRouter);
-app.use("/customers", ordersRouter);
+app.use(ordersRouter);
 
 app.use(
     (err: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {
