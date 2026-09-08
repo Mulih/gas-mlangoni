@@ -10,7 +10,7 @@ export const ordersRouter = Router();
 // belongs to the customer placing it, same reasoning as addresses being
 // nested under a customer rather than free-floating.
 ordersRouter.post<{ customerId: string }>(
-    "/:customersId/orders",
+    "/:customerId/orders",
     validate(createOrderSchema),
     async (req, res) => {
         const { customerId } = req.params;

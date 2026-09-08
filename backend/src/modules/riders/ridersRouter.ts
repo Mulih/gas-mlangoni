@@ -1,6 +1,6 @@
  import { Router } from "express";
-import { prisma } from "../lib/prisma";
-import { validate } from "../middleware/validate";
+import { prisma } from "../../lib/prisma";
+import { validate } from "../../middleware/validate";
 import { createRidersSchema } from "./ridersSchemas";
 
 export const ridersRouter = Router();

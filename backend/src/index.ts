@@ -2,7 +2,7 @@ import express from "express";
 import { customersRouter } from "./modules/customers/customersRouter";
 import { vendorsRouter } from "./modules/vendors/vendorsRouter";
 import { cylinderPricesRouter } from "./modules/cylinderPrices/cylinderPricesRouter";
-import { ridersRouter } from "./riders/ridersRouter";
+import { ridersRouter } from "./modules/riders/ridersRouter";
 import { ordersRouter } from "./modules/orders/ordersRouter";
 
 
