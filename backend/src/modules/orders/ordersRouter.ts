@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { prisma } from "../../lib/prisma";
 import { validate } from "../../middleware/validate";
-import { createOrderSchema } from "./ordersSchemas";
+import { assertValidTransition, InvalidOrderTransitionError } from "./orderStateMachine";
+import { createOrderSchema, updateOrderStatusSchema } from "./ordersSchemas";
 import { resolveOrderPricing, OrderPricingError } from "./orderPricing";
 
 export const ordersRouter = Router();
@@ -56,3 +57,37 @@ ordersRouter.post<{ customerId: string }>(
         res.status(201).json(order);
     },
 );
+
+// checks whether a transition is VALID per the state
+// machine, but not who is allowed to trigger it.
+ordersRouter.patch<{ orderId: string }>(
+    "/orders/:orderId/status",
+    validate(updateOrderStatusSchema),
+    async (req, res) => {
+        const { orderId } = req.params;
+        const { to } = req.body;
+
+        const order = await prisma.order.findUnique({ where: { id: orderId } });
+        if (!order) {
+            return res.status(400).json({ error: "order not found" });
+        }
+
+        try {
+            // orderStateMachine.ts
+            assertValidTransition(order.status, to);
+        } catch (err) {
+            if (err instanceof InvalidOrderTransitionError) {
+                return res.status(400).json({ error: err.message });
+            }
+            throw err;
+        }
+
+        const updated = await prisma.order.update({
+            where: { id: orderId },
+            data: { status: to },
+        });
+
+        res.status(200).json(updated);
+    },
+);
+    
