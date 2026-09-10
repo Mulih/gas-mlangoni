@@ -225,6 +225,8 @@ model Order {
   addressId String  @map("address_id")
   address   Address @relation(fields: [addressId], references: [id])
 
+  payment Payment?
+
   @@index([customerId])
   @@index([vendorId])
   @@map("orders")
@@ -249,4 +251,43 @@ enum OrderStatus {
 enum DeliveryMode {
   ON_DEMAND
   SCHEDULED
+}
+
+// Tracks one payment attempt for an order. 1-to-1 with Order (see the
+// flagged assumption in the ERD doc: this means only ever ONE payment
+// row per order - a retired STK push would need to overwrite this row
+// not create a second one. Worth revisiting if i need to log
+// failed attempts separately)
+model Payment {
+  id String @id @default(uuid())
+
+  orderId String @unique @map("order_id")
+  order Order @relation(fields: [orderId], references: [id])
+
+  // Both returned immediately by initiateStkPush - we have these the
+  // moment the push is sent, well before we know whether the customer
+  // actually completed payment.
+  merchantRequestId String @unique @map("merchant_request_id")
+  checkoutRequestId String @unique @map("checkout_request_id")
+
+  // Nullable specifically because this ONLY gets filled in once a real
+  // callback arrives confirming the payment actually completed - Null
+  // here means exactly "sent, outcome not yet known," a legal and
+  // expected state for a while after creation, not a bug.
+  mpesaReceiptNumber String? @map("mpesa_receipt_number")
+
+  amount Decimal @db.Decimal(10, 2)
+  status PaymentStatus @default(PENDING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
 }
