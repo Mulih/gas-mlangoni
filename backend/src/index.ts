@@ -4,7 +4,7 @@ import { vendorsRouter } from "./modules/vendors/vendorsRouter";
 import { cylinderPricesRouter } from "./modules/cylinderPrices/cylinderPricesRouter";
 import { ridersRouter } from "./modules/riders/ridersRouter";
 import { ordersRouter } from "./modules/orders/ordersRouter";
-import { getAccessToken } from "./modules/payments/darajaClient";
+
 
 
 const app = express();
@@ -40,9 +40,8 @@ app.use(
     },
 );
 
-app.get("/health", async (req, res) => {
-    const token = await getAccessToken();
-    res.json({ status: "ok", darajaToken: token.slice(0, 10)+ "..." });
+app.get("/health", (req, res) => {
+    res.json({ status: "ok" });
 });
 
 app.listen(port, () => {
