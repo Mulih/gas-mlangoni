@@ -6,7 +6,7 @@
 let cachedToken: string | null = null;
 let tokenExpiresAt = 0; // epoch milliseconds
 
-export async function getAccesstoken(): Promise<string> {
+export async function getAccessToken(): Promise<string> {
     // Reuse the cached token if it's still valid, rather than requesting a 
     // fresh one every single API call
     if (cachedToken && Date.now() < tokenExpiresAt) {
@@ -20,7 +20,7 @@ export async function getAccesstoken(): Promise<string> {
     // sending a request we already know will be rejected and getting a
     // confusing error back from Daraja instead of an obvious one from us.
     if (!consumerKey || !consumerSecret) {
-        throw new Error("DARAJA_COnsUMER_KEY or DARAJA_CONSUMER_SECRET is not set.");
+        throw new Error("DARAJA_CONSUMER_KEY or DARAJA_CONSUMER_SECRET is not set.");
     }
 
     // Basic Auth
