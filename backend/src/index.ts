@@ -4,7 +4,7 @@ import { vendorsRouter } from "./modules/vendors/vendorsRouter";
 import { cylinderPricesRouter } from "./modules/cylinderPrices/cylinderPricesRouter";
 import { ridersRouter } from "./modules/riders/ridersRouter";
 import { ordersRouter } from "./modules/orders/ordersRouter";
-
+import { initiateStkPush } from "./modules/payments/darajaClient";
 
 
 const app = express();
@@ -40,8 +40,14 @@ app.use(
     },
 );
 
-app.get("/health", (req, res) => {
-    res.json({ status: "ok" });
+app.get("/health", async (req, res) => {
+    const result = await initiateStkPush({
+        phone: "254708374149",
+        amount: 10,
+        orderId: "test-order",
+        accountReference: "TestOrder001"
+    });
+    res.json({ status: "ok", ...result });
 });
 
 app.listen(port, () => {
