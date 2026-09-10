@@ -6,7 +6,7 @@
 let cachedToken: string | null = null;
 let tokenExpiresAt = 0; // epoch milliseconds
 
-async function getAccesstoken(): Promise<string> {
+export async function getAccesstoken(): Promise<string> {
     // Reuse the cached token if it's still valid, rather than requesting a 
     // fresh one every single API call
     if (cachedToken && Date.now() < tokenExpiresAt) {
