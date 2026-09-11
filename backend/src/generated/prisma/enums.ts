@@ -53,3 +53,13 @@ export const DeliveryMode = {
 } as const
 
 export type DeliveryMode = (typeof DeliveryMode)[keyof typeof DeliveryMode]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]

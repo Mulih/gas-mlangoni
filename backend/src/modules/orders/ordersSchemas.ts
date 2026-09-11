@@ -21,3 +21,10 @@ export const updateOrderStatusSchema = z.object({
         "PAYOUT_RELEASED", "COMPLETED", "CANCELLED", "REFUNDED",
     ]),
 });
+
+// no fields at all from the request body - everything this endpoint
+// needs (amount, phone) comes from the Order and Customer records
+// themselves, never from what a client claims. Same principle as
+// totalAmount in createOrderSchema: clients says which order to pay for
+// not how much or to whaht number.
+export const initiatePaymentSchema = z.object({});
