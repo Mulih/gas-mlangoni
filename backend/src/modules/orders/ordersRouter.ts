@@ -2,8 +2,10 @@ import { Router } from "express";
 import { prisma } from "../../lib/prisma";
 import { validate } from "../../middleware/validate";
 import { assertValidTransition, InvalidOrderTransitionError } from "./orderStateMachine";
-import { createOrderSchema, updateOrderStatusSchema } from "./ordersSchemas";
+import { initiateStkPush } from "../payments/darajaClient";
+import { createOrderSchema, updateOrderStatusSchema, initiatePaymentSchema } from "./ordersSchemas";
 import { resolveOrderPricing, OrderPricingError } from "./orderPricing";
+
 
 export const ordersRouter = Router();
 
@@ -90,4 +92,58 @@ ordersRouter.patch<{ orderId: string }>(
         res.status(200).json(updated);
     },
 );
-    
+
+ordersRouter.post<{ orderId: string}>(
+    "/orders/:orderId/pay",
+    validate(initiatePaymentSchema),
+    async (req, res) => {
+        const { orderId } = req.params;
+
+        // include: { customer: true } - we need the customer's phone number
+        // to actually send the STK push to, which lives on a related table,
+        // not on Order itself.
+        const order = await prisma.order.findUnique({
+            where: { id: orderId },
+            include: { customer: true },
+        });
+
+        if (!order) {
+            return res.status(400).json({ error: "order not found" });
+        }
+
+        // An order can only be paid for once, from its correct starting
+        // state - reusing the same state-machine thinking as
+        // orderStateMachine.ts even though this specific check lives here
+        // rather than in that file, since it's checking Order.status against
+        // a fixed value, not a general transition.
+        if (order.status !== "PLACED") {
+            return res.status(400).json({ error: `Cannot initiate payment for an order in status ${order.status}` });
+        }
+
+        // Daraja expects phone numbers without the leading "+" (confirmed
+        // testing by hand with the sandbox number, 254708374149) but our
+        // own Customer.phone is stored with one ("+254700000001"), per the
+        // strips exactly the first character.
+        const phoneForDaraja = order.customer.phone.slice(1);
+        
+        const result = await initiateStkPush({
+            phone: phoneForDaraja,
+            amount: Number(order.totalAmount),
+            orderId: order.id,
+            accountReference: order.id,
+        });
+
+        const payment = await prisma.payment.create({
+            data: {
+                orderId: order.id,
+                merchantRequestId: result.merchantRequestId,
+                checkoutRequestId: result.checkoutRequestId,
+                amount: order.totalAmount,
+                // status isnt set here - @default(PENDING) is correct: we've
+                // only just sent the push, we don't know if it succeeded.
+            },
+        });
+
+        res.status(201).json(payment);
+    },
+);
