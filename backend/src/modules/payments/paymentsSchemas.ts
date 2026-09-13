@@ -7,11 +7,11 @@ import { z } from "zod";
 // includes it.
 export const darajaCallbackSchema = z.object({
     Body: z.object({
-        stkcallback: z.object({
+        stkCallback: z.object({
             MerchantRequestID: z.string(),
             CheckoutRequestID: z.string(),
             ResultCode: z.number(),
-            Resultdesc: z.string(),
+            ResultDesc: z.string(),
             CallbackMetadata: z
                 .object({
                     Item: z.array(
