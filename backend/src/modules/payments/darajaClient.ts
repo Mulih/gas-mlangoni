@@ -10,6 +10,10 @@ export interface StkPushResult {
     checkoutRequestId: string;
 }
 
+export interface TransactionStatusResult {
+    resultCode: number,
+    resultDesc: string,
+}
 
 // Daraja's access tokens are short-lived (~1hr per "expires_in":"3599")
 // every authenticateed call needs one.
@@ -118,5 +122,52 @@ export async function initiateStkPush(req: StkPushRequest): Promise<StkPushResul
     return {
         merchantRequestId: data.MerchantRequestID,
         checkoutRequestId: data.CheckoutRequestID,
+    };
+}
+
+export async function queryTransactionStatus(checkoutRequestId: string): Promise<TransactionStatusResult> {
+    const shortcode = process.env.DARAJA_SHORTCODE;
+    const passkey = process.env.DARAJA_PASSKEY;
+
+    if (!shortcode || !passkey) {
+        throw new Error("DARAJA_SHORTCODE of DARAJA_PASSKEY is not set");
+    }
+
+    const accessToken = await getAccessToken();
+
+    // Same timestamp/password scheme as initiateStkPush - Daraja requires
+    // a freshly-generated one for this call too, not the one from the
+    // original push request.
+    const timestamp = new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14);
+    const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString("base64");
+
+    const response = await fetch("https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query", {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            BusinessShortCode: shortcode,
+            Password: password,
+            Timestamp: timestamp,
+            checkoutRequestId: checkoutRequestId,
+        }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(`Daraja status query failed: ${JSON.stringify(data)}`);
+    }
+
+    // Note: this endpoint's response uses ResultCode as a STRING ("0"),
+    // unlike the callback payload where it's a genuine number (0) - a real
+    // inconsitency in Daraja's own API
+    // Number() normalizes it so the caller's dont have to know which shape
+    // they're dealing with.
+    return {
+        resultCode: Number(data.ResultCode),
+        resultDesc: data.ResultDesc,
     };
 }
