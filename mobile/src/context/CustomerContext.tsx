@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Customer {
     id: string;
@@ -7,14 +8,39 @@ interface Customer {
 
 interface CustomerContextValue {
     customer: Customer | null;
+    isLoading: boolean;
     setCustomer: (customer: Customer) => void;
 }
 
 const CustomerContext = createContext<CustomerContextValue | undefined>(undefined);
+const STORAGE_KEY = "gasmlangoni_customer";
 
 export function CustomerProvider({ children }: { children: ReactNode }) {
-  const [customer, setCustomer] = useState<Customer | null>(null);
-  return <CustomerContext.Provider value={{ customer, setCustomer }}>{children}</CustomerContext.Provider>;
+  const [customer, setCustomerState] = useState<Customer | null>(null);
+  // Starts true - we don't yet know if a stored cutomer exists, and
+  // showing Onboarding for a split second before correcting to Main
+  // would be visible flicker, not a clean experience.
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Runs once, on mount - checks for a previously-registered customer
+  // before we decide which screen to open on.
+  useEffect(() => {
+    AsyncStorage.getItem(STORAGE_KEY)
+      .then((stored) => {
+        if (stored) setCustomerState(JSON.parse(stored));
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  // Writes to disk, not just memory - this line is the actual fix.
+  // Without it, state would reset to null every time the app fully 
+  // restarts, regardless of anything else.
+  async function setCustomer(newCustomer: Customer) {
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newCustomer));
+    setCustomerState(newCustomer);
+  }
+
+  return <CustomerContext.Provider value={{ customer, isLoading, setCustomer }}>{children}</CustomerContext.Provider>;
 }
 
 // A small wrapper hook rather than expecting CustomerContext directly -
