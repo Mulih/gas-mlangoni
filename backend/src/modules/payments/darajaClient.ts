@@ -141,7 +141,6 @@ export async function queryTransactionStatus(checkoutRequestId: string): Promise
     const timestamp = new Date().toISOString().replace(/[^0-9]/g, "").slice(0, 14);
     const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString("base64");
 
-    console.log(JSON.stringify({ BusinessShortCode: shortcode, Password: password, Timestamp: timestamp, CheckoutRequestID: checkoutRequestId }))
     const response = await fetch("https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query", {
         method: "POST",
         headers: {
