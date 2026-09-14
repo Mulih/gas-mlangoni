@@ -9,8 +9,6 @@ import { api, ApiError } from "../api/client";
 import { useCustomer } from "../context/CustomerContext";
 
 
-const { setCustomer } = useCustomer();
-
 type Props = NativeStackScreenProps<RootStackParamList, "Registration">;
 
 // matches the backend's own regex exactly (createCustomerSchema on the
@@ -23,6 +21,7 @@ export function RegistrationScreen({ navigation }: Props) {
     const [name, setName] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const { setCustomer } = useCustomer();
 
     async function handleSubmit() {
         setError(null);
