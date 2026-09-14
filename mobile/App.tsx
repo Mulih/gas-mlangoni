@@ -1,36 +1,32 @@
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { View, Text } from "react-native";
 
-export default function App() {
-  // Holds whatever the backend returns, or an error message - starts
-  // as null since we haven't gotten a response yet on the first render.
-  const [status, setStatus ] = useState<string | null>(null);
-
-  // An empty dependency array ([]) means this runs exactly once, right
-  // after the component first renders - the React equivalent of "do
-  // this on load" not on every re-render.
-  useEffect(() => {
-    // Deliberately NOT "localhost" - from the phones's perspective,
-    // localhost means the phone itself, not the dev machine. This is
-    // the machine's actual local network IP,
-    fetch("http://192.168.100.74:3000/health")
-      .then((res) => res.json())
-      .then((data) => setStatus(JSON.stringify(data)))
-      .catch((err) => setStatus(`Error: ${err.message}`));
-  }, []);
-
+// A temporary placeholder to prove navigation is wired up
+// correctly
+function PlacholderScreen() {
   return (
-    <View style={styles.container}>
-      <Text>Backend says: {status ?? "loading..."}</Text>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Navigation works</Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// createNativeStackNavigator() returns a matched pair: a Navigator
+// (the container) and a Screen (how you register each screen inside
+// it)
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    // NavigationContainer has to wrap everything navigation-related
+    // it's the piece that actually manages screen history and back
+    // behavior, similar in spirit to how every Express route needed to
+    // sit inside the one shared `app` instance
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Placeholder" component={PlacholderScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
