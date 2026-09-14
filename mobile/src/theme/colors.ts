@@ -5,7 +5,7 @@ export const colors = {
     black: "#111111",
     blackSoft: "#1A1A1A",
     blackDeep: "#080808",
-    white: "#FFFFFFF",
+    white: "#FFFFFF",
     whiteSoft: "#F8F8F8",
     textPrimary: "#111111",
     textSecondary: "#666666",

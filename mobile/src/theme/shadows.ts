@@ -7,7 +7,7 @@ import { Platform } from "react-native";
 // phone the app is actually running on.
 export const shadows = {
     sm: Platform.select({
-        ios: { shadowcolor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8 },
+        ios: { shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8 },
         android: { elevation: 2 },
     }),
     md: Platform.select({

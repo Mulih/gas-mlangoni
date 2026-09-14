@@ -4,7 +4,7 @@ import { View, Text } from "react-native";
 
 // A temporary placeholder to prove navigation is wired up
 // correctly
-function PlacholderScreen() {
+function PlaceholderScreen() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Navigation works</Text>
@@ -25,7 +25,7 @@ export default function App() {
     // sit inside the one shared `app` instance
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Placeholder" component={PlacholderScreen} />
+        <Stack.Screen name="Placeholder" component={PlaceholderScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
