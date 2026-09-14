@@ -147,3 +147,17 @@ ordersRouter.post<{ orderId: string}>(
         res.status(201).json(payment);
     },
 );
+
+// GET /customers/:customerId/orders - every order this customer has
+// placed, newest first. This is what the Orders tab and "My Orders"
+// actually list.
+ordersRouter.get<{ customerId: string }>("/customers/:customerId/orders", async (req, res) => {
+    const { customerId } = req.params;
+
+    const orders = await prisma.order.findMany({
+        where: { customerId },
+        orderBy: { createdAt: "desc" },
+    });
+
+    res.json(orders);
+});
