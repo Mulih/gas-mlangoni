@@ -4,4 +4,5 @@
 export type RootStackParamList = {
     Onboarding: undefined;
     Registration: undefined;
+    Home: { customerId: string };
 };
