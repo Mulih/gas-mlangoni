@@ -27,10 +27,16 @@ ordersRouter.post<{ customerId: string }>(
             return res.status(400).json({ error: "AddressId does not belong to this customer" });
         }
 
+        // Flat fee for MVP - the original spec's "Zone Delivery Fee" concept
+        // is real but not for right now. This constant is the one place to change if/when
+        // zone-based pricing gets built later; nothing else in this file needs to know about it
+        const DELIVERY_FEE = 200;
+
         // Pricing and stock, resolved entirely server-side
         let totalAmount;
-        try {
-            ({ totalAmount } = await resolveOrderPricing(vendorId, brand, size));
+        try {           
+            const pricing = await resolveOrderPricing(vendorId, brand, size);
+            totalAmount = Number(pricing.totalAmount) + DELIVERY_FEE;
         } catch (err) {
             if (err instanceof OrderPricingError) {
                 return res.status(400).json({ error: err.message });
