@@ -4,5 +4,11 @@
 export type RootStackParamList = {
     Onboarding: undefined;
     Registration: undefined;
-    Home: { customerId: string };
+    Main: undefined;
+};
+
+export type MainTabParamList = {
+    Home: undefined;
+    Orders: undefined;
+    Profile: undefined;
 };

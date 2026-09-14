@@ -6,6 +6,10 @@ import { PrimaryButton } from "../components/PrimaryButton";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import { api, ApiError } from "../api/client";
+import { useCustomer } from "../context/CustomerContext";
+
+
+const { setCustomer } = useCustomer();
 
 type Props = NativeStackScreenProps<RootStackParamList, "Registration">;
 
@@ -30,7 +34,8 @@ export function RegistrationScreen({ navigation }: Props) {
         setLoading(true);
         try {
             const customer = await api.post<{ id: string }>("/customers", { phone, name: name || undefined });
-            navigation.replace("Home", { customerId: customer.id });
+            setCustomer(customer);
+            navigation.replace("Main");
         } catch (err) {
             setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
         } finally {
