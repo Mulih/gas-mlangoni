@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, ImageBackground } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../navigation/types";
 import { colors } from "../theme/colors";
@@ -13,9 +13,13 @@ type Props = NativeStackScreenProps<RootStackParamList, "Onboarding">;
 
 // Text only for now -  the rider/cylinder illustrations are a separate
 // asset-creation task, not something to block navigation logic on.
+type Slide = 
+  | { image: ReturnType<typeof require> }
+  | { title: string; description: string };
+
 const SLIDES = [
-    { title: "Safe LPG Delivery,\nRight to your Door.", description: "" },
-    { title: "Quality You\nCan Trust", description: "Every cylinder is weight audited for your safety and peace of mind." },
+    { image: require("../../assets/onboarding/side-1.png") },
+    { image: require("../../assets/onboarding/slide-2.png") },
     { title: "Fast & Reliable\nDelivery", description: "Get your LPG delivered at your convenience, right on time." },
     { title: "Certified &\nAudited", description: "We ensure genuine, safe, and hig-quality LPG with every order." },
 ];
@@ -23,6 +27,7 @@ const SLIDES = [
 export function OnboardingScreen({ navigation }: Props) {
     const [index, setIndex] = useState(0);
     const isLastSlide = index === SLIDES.length - 1;
+    const slide = SLIDES[index];
 
     function handleNext() {
         if (isLastSlide) {

@@ -29,6 +29,9 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
       .then((stored) => {
         if (stored) setCustomerState(JSON.parse(stored));
       })
+      .catch((err) => {
+        console.error("Failed to load stored customer:", err);
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
