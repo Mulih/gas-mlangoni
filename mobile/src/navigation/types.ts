@@ -5,6 +5,8 @@ export type RootStackParamList = {
     Onboarding: undefined;
     Registration: undefined;
     Main: undefined;
+    Order: undefined;
+    Payment: { orderId: string; totalAmount: string };
 };
 
 export type MainTabParamList = {
