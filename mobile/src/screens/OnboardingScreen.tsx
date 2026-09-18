@@ -29,7 +29,7 @@ const SLIDES = [
 // full visible regardless of how the screen's proportions compare to
 // the artwork's
 function ArtworkSlide({ source, overlay }: { source: ReturnType<typeof require>; overlay: React.ReactNode }) {
-    const { width: screenWidth } = useWindowDimensions();
+    const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
     // For a a require()'d local image, React Native's bundler embeds the
     // file's real pixel dimensions - this reads them directly rather than
@@ -38,20 +38,18 @@ function ArtworkSlide({ source, overlay }: { source: ReturnType<typeof require>;
 
     // same scaling math "cover" does internally - scale so the image's
     // width exactly matches the screen's width.
-    const scale = screenWidth / imageWidth;
+    const scale = Math.max(screenWidth / imageWidth, screenHeight / imageHeight);
+    const scaledWidth = imageWidth * scale;
     const scaledHeight = imageHeight * scale;
+
 
     return (
         // overflow: "hidden" is what actually oes the cropping - without
         // it, the oversized image would just spill past the screen's edges
         // instead of being clipped.
-        <View>
-            <Image
-              source={source}
-              style={{ position: "absolute", bottom: 0, width: screenWidth, height: scaledHeight }}
-            />
-            {overlay}
-        </View>
+        <ImageBackground source={source} style={{ flex: 1, justifyContent: "flex-end" }} resizeMode="cover">
+          {overlay}
+        </ImageBackground>
     );
 }
 
