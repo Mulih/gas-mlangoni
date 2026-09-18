@@ -10,6 +10,7 @@ interface CustomerContextValue {
     customer: Customer | null;
     isLoading: boolean;
     setCustomer: (customer: Customer) => void;
+    logout: () => Promise<void>;
 }
 
 const CustomerContext = createContext<CustomerContextValue | undefined>(undefined);
@@ -43,7 +44,12 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
     setCustomerState(newCustomer);
   }
 
-  return <CustomerContext.Provider value={{ customer, isLoading, setCustomer }}>{children}</CustomerContext.Provider>;
+  async function logout() {
+    await AsyncStorage.removeItem(STORAGE_KEY);
+    setCustomerState(null);
+  }
+
+  return <CustomerContext.Provider value={{ customer, isLoading, setCustomer, logout }}>{children}</CustomerContext.Provider>;
 }
 
 // A small wrapper hook rather than expecting CustomerContext directly -

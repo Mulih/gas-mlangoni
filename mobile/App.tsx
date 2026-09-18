@@ -17,12 +17,19 @@ function Navigation() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={customer ? "Main" : "Onboarding"} screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-        <Stack.Screen name="Registration" component={RegistrationScreen} />
-        <Stack.Screen name="Order" component={OrderScreen} options={{ headerShown: true, title: "Place Order" }} />
-        <Stack.Screen name="Payment" component={PaymentScreen} options={{ headerShown: true, title: "Payment" }} />
-        <Stack.Screen name="Main" component={MainTabs} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {customer ? (
+          <>
+            <Stack.Screen name="Main" component={MainTabs} />
+            <Stack.Screen name="Order" component={OrderScreen} options={{ headerShown: true, title: "Place Order" }} />
+            <Stack.Screen name="Payment" component={PaymentScreen} options={{ headerShown: true, title: "Payment" }} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="Registration" component={RegistrationScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
