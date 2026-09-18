@@ -7,6 +7,8 @@ import { api, ApiError } from "../api/client";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import { radius } from "../theme/radius";
+import { Card } from "../components/Card";
+import { StatusPill } from "../components/StatusPill";
 
 type Props = BottomTabScreenProps<MainTabParamList, "Orders">;
 
@@ -51,14 +53,14 @@ export function OrdersScreen({}: Props) {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={async () => { setRefreshing(true); await loadOrders(); setRefreshing(false); }} tintColor={colors.primary} />}
         ListEmptyComponent={<Text style={styles.emptyText}>No orders yet.</Text>}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <Card>
             <View style={styles.cardTop}>
               <Text style={styles.cardTitle}>{item.size} — {item.brand}</Text>
               <Text style={styles.cardAmount}>KSh {item.totalAmount}</Text>
             </View>
-            <Text style={styles.cardStatus}>{STATUS_LABELS[item.status] ?? item.status}</Text>
+            <StatusPill label={STATUS_LABELS[item.status] ?? item.status} status={item.status}/>
             <Text style={styles.cardDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
-          </View>
+          </Card>
         )}
       />
     </View>
