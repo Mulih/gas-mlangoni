@@ -184,3 +184,17 @@ ordersRouter.post<{ orderId: string }>("/orders/:orderId/debug-dispatch", async 
     await dispatchOrder(req.params.orderId);
     res.json({ ok: true });
 });
+
+ordersRouter.patch<{ orderId: string }>("/orders/:orderId/cancel", async (req, res) => {
+    const order = await prisma.order.findUnique({ where: { id: req.params.orderId } });
+    if (!order) return res.status(400).json({ error: "order not found" });
+
+    try {
+        assertValidTransition(order.status, "CANCELLED");
+    } catch (err) {
+        if (err instanceof InvalidOrderTransitionError) return res.status(400).json({ error: err.message });
+        throw err;
+    }
+
+    res.json(await prisma.order.update({ where: { id: order.id }, data: { status: "CANCELLED" } }));
+})
