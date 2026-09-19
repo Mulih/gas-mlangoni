@@ -2,6 +2,7 @@ import { Router } from "express";
 import { prisma } from "../../lib/prisma";
 import { darajaCallbackSchema } from "./paymentsSchemas";
 import { assertValidTransition } from "../orders/orderStateMachine";
+import { dispatchOrder } from "../orders/dispatch";
 
 export const paymentsRouter = Router();
 
@@ -63,11 +64,13 @@ paymentsRouter.post("/callback", async (req, res) => {
                 where: { id: payment.orderId },
                 data: { status: "ESCROW_HELD" },
             });
+            await dispatchOrder(payment.orderId);
         } else {
             // 1032 is Daraja's specific code for "user cancelled"
             // anything else gets the more general FAILED status
             // rather than us trying to enumerate every possible
             // failure code individually.
+            console.log("Payment not completed. ResultCode:", ResultCode, "ResultDesc:", parsed.data.Body.stkCallback.ResultDesc);
             const status = ResultCode === 1032 ? "CANCELLED" : "FAILED";
             await prisma.payment.update({ where: { id: payment.id }, data: { status } });
         }

@@ -5,6 +5,7 @@ import { assertValidTransition, InvalidOrderTransitionError } from "./orderState
 import { initiateStkPush } from "../payments/darajaClient";
 import { createOrderSchema, updateOrderStatusSchema, initiatePaymentSchema } from "./ordersSchemas";
 import { resolveOrderPricing, OrderPricingError } from "./orderPricing";
+import { dispatchOrder } from "./dispatch";
 
 
 export const ordersRouter = Router();
@@ -177,4 +178,9 @@ ordersRouter.get<{ orderId: string}>("/orders/:orderId", async (req, res) => {
     const order = await prisma.order.findUnique({ where: { id: req.params.orderId} });
     if (!order) return res.status(404).json({ error: "order not found" });
     res.json(order);
+});
+
+ordersRouter.post<{ orderId: string }>("/orders/:orderId/debug-dispatch", async (req, res) => {
+    await dispatchOrder(req.params.orderId);
+    res.json({ ok: true });
 });
