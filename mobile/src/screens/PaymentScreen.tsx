@@ -6,6 +6,7 @@ import { api, ApiError } from "../api/client";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
+import { Card } from "../components/Card";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Payment">;
 type PaymentState = "idle" | "initiating" | "waiting" | "success" | "failed" | "error";
@@ -68,8 +69,10 @@ export function PaymentScreen({ route, navigation }: Props) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.amount}>Ksh {totalAmount}</Text>
-            <Text style={styles.subtitle}>Total amount due</Text>
+            <Card style={{ alignItems: "center", marginBottom: spacing[8] }}>
+              <Text style={styles.amount}>Ksh {totalAmount}</Text>
+              <Text style={styles.subtitle}>Total amount due</Text>
+            </Card>
 
             {state === "idle" && <PrimaryButton title="Pay with M-Pesa" onPress={handlePay} />}
 

@@ -139,14 +139,19 @@ ordersRouter.post<{ orderId: string}>(
             accountReference: order.id,
         });
 
-        const payment = await prisma.payment.create({
-            data: {
+        const payment = await prisma.payment.upsert({
+            where: { orderId: order.id },
+            update: {
+                merchantRequestId: result.merchantRequestId,
+                checkoutRequestId: result.checkoutRequestId,
+                status: "PENDING",
+                mpesaReceiptNumber: null,
+            },
+            create: {
                 orderId: order.id,
                 merchantRequestId: result.merchantRequestId,
                 checkoutRequestId: result.checkoutRequestId,
                 amount: order.totalAmount,
-                // status isnt set here - @default(PENDING) is correct: we've
-                // only just sent the push, we don't know if it succeeded.
             },
         });
 

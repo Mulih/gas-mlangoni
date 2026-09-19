@@ -70,9 +70,12 @@ customersRouter.post("/", validate(createCustomerSchema), async (req, res) => {
         return res.status(400).json({ error: "phone is required" })
     }
 
-    const customer = await prisma.customer.create({
-        data: { phone, name },
+    const customer = await prisma.customer.upsert({
+        where: { phone },
+        update: {},
+        create: { phone, name },
     });
 
     res.status(201).json(customer);
 });
+
