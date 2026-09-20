@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl, Pressable } from "react-native";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { MainTabParamList } from "../navigation/types";
 import { useCustomer } from "../context/CustomerContext";
@@ -38,6 +38,15 @@ export function OrdersScreen({}: Props) {
     }
   }, [customer]);
 
+  async function handleCancel(orderId: string) {
+    try {
+      await api.patch(`/orders/${orderId}/cancel`, {});
+      await loadOrders();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Failed to cancel order");
+    }
+  }
+
   useEffect(() => { loadOrders().finally(() => setLoading(false)); }, [loadOrders]);
 
   if (loading) return <View style={styles.centered}><ActivityIndicator color={colors.primary} size="large" /></View>;
@@ -60,6 +69,11 @@ export function OrdersScreen({}: Props) {
             </View>
             <StatusPill label={STATUS_LABELS[item.status] ?? item.status} status={item.status}/>
             <Text style={styles.cardDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+            {item.status === "PLACED" && (
+              <Pressable style={styles.cancelButton} onPress={() => handleCancel(item.id)}>
+                <Text style={styles.cancelText}>Cancel Order</Text>
+              </Pressable>
+            )}
           </Card>
         )}
       />
@@ -80,4 +94,6 @@ const styles = StyleSheet.create({
   cardAmount: { fontSize: 15, fontWeight: "800", color: colors.primary },
   cardStatus: { fontSize: 13, color: colors.textSecondary, marginTop: spacing[1] },
   cardDate: { fontSize: 11, color: colors.textMuted, marginTop: 2 },
+  cancelButton: { marginTop: spacing[2] },
+  cancelText: { color: colors.error, fontSize: 12, fontWeight: "700" },
 });

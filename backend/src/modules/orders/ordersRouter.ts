@@ -175,7 +175,10 @@ ordersRouter.get<{ customerId: string }>("/customers/:customerId/orders", async 
 });
 
 ordersRouter.get<{ orderId: string}>("/orders/:orderId", async (req, res) => {
-    const order = await prisma.order.findUnique({ where: { id: req.params.orderId} });
+    const order = await prisma.order.findUnique({ 
+        where: { id: req.params.orderId},
+        include: { rider: true }, 
+    });
     if (!order) return res.status(404).json({ error: "order not found" });
     res.json(order);
 });
