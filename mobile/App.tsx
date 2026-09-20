@@ -7,6 +7,7 @@ import { OrderScreen } from "./src/screens/OrderScreen";
 import { PaymentScreen } from "./src/screens/PaymentScreen";
 import { MainTabs } from "./src/navigation/MainTabs";
 import type { RootStackParamList } from "./src/navigation/types";
+import { TrackingScreen } from "./src/screens/TrackingScreen";
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -23,6 +24,7 @@ function Navigation() {
             <Stack.Screen name="Main" component={MainTabs} />
             <Stack.Screen name="Order" component={OrderScreen} options={{ headerShown: true, title: "Place Order" }} />
             <Stack.Screen name="Payment" component={PaymentScreen} options={{ headerShown: true, title: "Payment" }} />
+            <Stack.Screen name="Tracking" component={TrackingScreen} options={{ headerShown: true, title: "Track Order" }} />
           </>
         ) : (
           <>

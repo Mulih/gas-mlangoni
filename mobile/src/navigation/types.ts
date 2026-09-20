@@ -7,6 +7,7 @@ export type RootStackParamList = {
     Main: undefined;
     Order: undefined;
     Payment: { orderId: string; totalAmount: string };
+    Tracking: { orderId: string };
 };
 
 export type MainTabParamList = {
