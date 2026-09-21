@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 import { validate } from "../../middleware/validate";
 import { assertValidTransition, InvalidOrderTransitionError } from "./orderStateMachine";
 import { initiateStkPush } from "../payments/darajaClient";
-import { createOrderSchema, updateOrderStatusSchema, initiatePaymentSchema } from "./ordersSchemas";
+import { createOrderSchema, updateOrderStatusSchema, initiatePaymentSchema, confirmDeliverySchema } from "./ordersSchemas";
 import { resolveOrderPricing, OrderPricingError } from "./orderPricing";
 import { dispatchOrder } from "./dispatch";
 
@@ -200,4 +200,35 @@ ordersRouter.patch<{ orderId: string }>("/orders/:orderId/cancel", async (req, r
     }
 
     res.json(await prisma.order.update({ where: { id: order.id }, data: { status: "CANCELLED" } }));
-})
+});
+
+// PATCH /orders/:orderId/confirm-delivery - the customer enters the
+// weight shown on the rider's scale and confirms. Two automated transitions in one call
+// since there's no separate rider-side "arrived" trigger, and no
+// dispute path yet every confirmation will go straight through.
+ordersRouter.patch<{ orderId: string }>(
+    "/orders/:orderId/confirm-delivery",
+    validate(confirmDeliverySchema),
+    async (req, res) => {
+        const { measuredWeight } = req.body;
+        const order = await prisma.order.findUnique({ where: { id: req.params.orderId } });
+        if (!order) return res.status(404).json({ error: "order not found" });
+
+        try {
+            assertValidTransition(order.status, "AUDIT_IN_PROGRESS");
+        } catch (err) {
+            if (err instanceof InvalidOrderTransitionError) return res.status(400).json({ error: err.message });
+            throw err;
+        }
+
+        await prisma.order.update({ where: { id: order.id }, data: { status: "AUDIT_IN_PROGRESS" } });
+        assertValidTransition("AUDIT_IN_PROGRESS", "DELIVERED");
+
+        // include: rider 
+        const updated = await prisma.order.update({ where: { id: order.id }, data: { status: "DELIVERED" }, include: { rider: true } });
+
+        await prisma.weightAuditLog.create({ data: { orderId: order.id, measuredWeight, customerConfirmed: true } });
+
+        res.json(updated);
+    },
+);
