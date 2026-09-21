@@ -19,4 +19,7 @@ export async function dispatchOrder(orderId: string) {
         prisma.order.update({ where: { id: orderId }, data: { status: "ASSIGNED", riderId: rider.id } }),
         prisma.rider.update({ where: { id: rider.id }, data: { status: "ON_DELIVERY" } }),
     ]);
+
+    assertValidTransition("ASSIGNED", "EN_ROUTE");
+    await prisma.order.update({ where: { id: orderId }, data: { status: "EN_ROUTE" } });
 }

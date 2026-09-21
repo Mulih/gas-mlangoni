@@ -277,6 +277,7 @@ export type OrderWhereInput = {
   rider?: Prisma.XOR<Prisma.RiderNullableScalarRelationFilter, Prisma.RiderWhereInput> | null
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
   payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
+  weightAuditLog?: Prisma.XOR<Prisma.WeightAuditLogNullableScalarRelationFilter, Prisma.WeightAuditLogWhereInput> | null
 }
 
 export type OrderOrderByWithRelationInput = {
@@ -297,6 +298,7 @@ export type OrderOrderByWithRelationInput = {
   rider?: Prisma.RiderOrderByWithRelationInput
   address?: Prisma.AddressOrderByWithRelationInput
   payment?: Prisma.PaymentOrderByWithRelationInput
+  weightAuditLog?: Prisma.WeightAuditLogOrderByWithRelationInput
 }
 
 export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -320,6 +322,7 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   rider?: Prisma.XOR<Prisma.RiderNullableScalarRelationFilter, Prisma.RiderWhereInput> | null
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
   payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
+  weightAuditLog?: Prisma.XOR<Prisma.WeightAuditLogNullableScalarRelationFilter, Prisma.WeightAuditLogWhereInput> | null
 }, "id">
 
 export type OrderOrderByWithAggregationInput = {
@@ -374,6 +377,7 @@ export type OrderCreateInput = {
   rider?: Prisma.RiderCreateNestedOneWithoutOrdersInput
   address: Prisma.AddressCreateNestedOneWithoutOrdersInput
   payment?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateInput = {
@@ -390,6 +394,7 @@ export type OrderUncheckedCreateInput = {
   updatedAt?: Date | string
   addressId: string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUpdateInput = {
@@ -406,6 +411,7 @@ export type OrderUpdateInput = {
   rider?: Prisma.RiderUpdateOneWithoutOrdersNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutOrdersNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateInput = {
@@ -422,6 +428,7 @@ export type OrderUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   addressId?: Prisma.StringFieldUpdateOperationsInput | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateManyInput = {
@@ -723,6 +730,20 @@ export type OrderUpdateOneRequiredWithoutPaymentNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutPaymentInput, Prisma.OrderUpdateWithoutPaymentInput>, Prisma.OrderUncheckedUpdateWithoutPaymentInput>
 }
 
+export type OrderCreateNestedOneWithoutWeightAuditLogInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutWeightAuditLogInput, Prisma.OrderUncheckedCreateWithoutWeightAuditLogInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutWeightAuditLogInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneRequiredWithoutWeightAuditLogNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutWeightAuditLogInput, Prisma.OrderUncheckedCreateWithoutWeightAuditLogInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutWeightAuditLogInput
+  upsert?: Prisma.OrderUpsertWithoutWeightAuditLogInput
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutWeightAuditLogInput, Prisma.OrderUpdateWithoutWeightAuditLogInput>, Prisma.OrderUncheckedUpdateWithoutWeightAuditLogInput>
+}
+
 export type OrderCreateWithoutCustomerInput = {
   id?: string
   brand: string
@@ -736,6 +757,7 @@ export type OrderCreateWithoutCustomerInput = {
   rider?: Prisma.RiderCreateNestedOneWithoutOrdersInput
   address: Prisma.AddressCreateNestedOneWithoutOrdersInput
   payment?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutCustomerInput = {
@@ -751,6 +773,7 @@ export type OrderUncheckedCreateWithoutCustomerInput = {
   updatedAt?: Date | string
   addressId: string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutCustomerInput = {
@@ -810,6 +833,7 @@ export type OrderCreateWithoutAddressInput = {
   vendor: Prisma.VendorCreateNestedOneWithoutOrdersInput
   rider?: Prisma.RiderCreateNestedOneWithoutOrdersInput
   payment?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutAddressInput = {
@@ -825,6 +849,7 @@ export type OrderUncheckedCreateWithoutAddressInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutAddressInput = {
@@ -866,6 +891,7 @@ export type OrderCreateWithoutVendorInput = {
   rider?: Prisma.RiderCreateNestedOneWithoutOrdersInput
   address: Prisma.AddressCreateNestedOneWithoutOrdersInput
   payment?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutVendorInput = {
@@ -881,6 +907,7 @@ export type OrderUncheckedCreateWithoutVendorInput = {
   updatedAt?: Date | string
   addressId: string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutVendorInput = {
@@ -922,6 +949,7 @@ export type OrderCreateWithoutRiderInput = {
   vendor: Prisma.VendorCreateNestedOneWithoutOrdersInput
   address: Prisma.AddressCreateNestedOneWithoutOrdersInput
   payment?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutRiderInput = {
@@ -937,6 +965,7 @@ export type OrderUncheckedCreateWithoutRiderInput = {
   updatedAt?: Date | string
   addressId: string
   payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutRiderInput = {
@@ -978,6 +1007,7 @@ export type OrderCreateWithoutPaymentInput = {
   vendor: Prisma.VendorCreateNestedOneWithoutOrdersInput
   rider?: Prisma.RiderCreateNestedOneWithoutOrdersInput
   address: Prisma.AddressCreateNestedOneWithoutOrdersInput
+  weightAuditLog?: Prisma.WeightAuditLogCreateNestedOneWithoutOrderInput
 }
 
 export type OrderUncheckedCreateWithoutPaymentInput = {
@@ -993,6 +1023,7 @@ export type OrderUncheckedCreateWithoutPaymentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   addressId: string
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedCreateNestedOneWithoutOrderInput
 }
 
 export type OrderCreateOrConnectWithoutPaymentInput = {
@@ -1024,6 +1055,7 @@ export type OrderUpdateWithoutPaymentInput = {
   vendor?: Prisma.VendorUpdateOneRequiredWithoutOrdersNestedInput
   rider?: Prisma.RiderUpdateOneWithoutOrdersNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutOrdersNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutPaymentInput = {
@@ -1039,6 +1071,87 @@ export type OrderUncheckedUpdateWithoutPaymentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   addressId?: Prisma.StringFieldUpdateOperationsInput | string
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedUpdateOneWithoutOrderNestedInput
+}
+
+export type OrderCreateWithoutWeightAuditLogInput = {
+  id?: string
+  brand: string
+  size: string
+  status?: $Enums.OrderStatus
+  deliveryMode: $Enums.DeliveryMode
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  customer: Prisma.CustomerCreateNestedOneWithoutOrdersInput
+  vendor: Prisma.VendorCreateNestedOneWithoutOrdersInput
+  rider?: Prisma.RiderCreateNestedOneWithoutOrdersInput
+  address: Prisma.AddressCreateNestedOneWithoutOrdersInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+}
+
+export type OrderUncheckedCreateWithoutWeightAuditLogInput = {
+  id?: string
+  customerId: string
+  vendorId: string
+  riderId?: string | null
+  brand: string
+  size: string
+  status?: $Enums.OrderStatus
+  deliveryMode: $Enums.DeliveryMode
+  totalAmount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  addressId: string
+  payment?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+}
+
+export type OrderCreateOrConnectWithoutWeightAuditLogInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutWeightAuditLogInput, Prisma.OrderUncheckedCreateWithoutWeightAuditLogInput>
+}
+
+export type OrderUpsertWithoutWeightAuditLogInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutWeightAuditLogInput, Prisma.OrderUncheckedUpdateWithoutWeightAuditLogInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutWeightAuditLogInput, Prisma.OrderUncheckedCreateWithoutWeightAuditLogInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutWeightAuditLogInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutWeightAuditLogInput, Prisma.OrderUncheckedUpdateWithoutWeightAuditLogInput>
+}
+
+export type OrderUpdateWithoutWeightAuditLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  brand?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  deliveryMode?: Prisma.EnumDeliveryModeFieldUpdateOperationsInput | $Enums.DeliveryMode
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  customer?: Prisma.CustomerUpdateOneRequiredWithoutOrdersNestedInput
+  vendor?: Prisma.VendorUpdateOneRequiredWithoutOrdersNestedInput
+  rider?: Prisma.RiderUpdateOneWithoutOrdersNestedInput
+  address?: Prisma.AddressUpdateOneRequiredWithoutOrdersNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutWeightAuditLogInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  customerId?: Prisma.StringFieldUpdateOperationsInput | string
+  vendorId?: Prisma.StringFieldUpdateOperationsInput | string
+  riderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brand?: Prisma.StringFieldUpdateOperationsInput | string
+  size?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  deliveryMode?: Prisma.EnumDeliveryModeFieldUpdateOperationsInput | $Enums.DeliveryMode
+  totalAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  addressId?: Prisma.StringFieldUpdateOperationsInput | string
+  payment?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderCreateManyCustomerInput = {
@@ -1068,6 +1181,7 @@ export type OrderUpdateWithoutCustomerInput = {
   rider?: Prisma.RiderUpdateOneWithoutOrdersNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutOrdersNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutCustomerInput = {
@@ -1083,6 +1197,7 @@ export type OrderUncheckedUpdateWithoutCustomerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   addressId?: Prisma.StringFieldUpdateOperationsInput | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutCustomerInput = {
@@ -1126,6 +1241,7 @@ export type OrderUpdateWithoutAddressInput = {
   vendor?: Prisma.VendorUpdateOneRequiredWithoutOrdersNestedInput
   rider?: Prisma.RiderUpdateOneWithoutOrdersNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutAddressInput = {
@@ -1141,6 +1257,7 @@ export type OrderUncheckedUpdateWithoutAddressInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutAddressInput = {
@@ -1184,6 +1301,7 @@ export type OrderUpdateWithoutVendorInput = {
   rider?: Prisma.RiderUpdateOneWithoutOrdersNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutOrdersNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutVendorInput = {
@@ -1199,6 +1317,7 @@ export type OrderUncheckedUpdateWithoutVendorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   addressId?: Prisma.StringFieldUpdateOperationsInput | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutVendorInput = {
@@ -1242,6 +1361,7 @@ export type OrderUpdateWithoutRiderInput = {
   vendor?: Prisma.VendorUpdateOneRequiredWithoutOrdersNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutOrdersNestedInput
   payment?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutRiderInput = {
@@ -1257,6 +1377,7 @@ export type OrderUncheckedUpdateWithoutRiderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   addressId?: Prisma.StringFieldUpdateOperationsInput | string
   payment?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  weightAuditLog?: Prisma.WeightAuditLogUncheckedUpdateOneWithoutOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutRiderInput = {
@@ -1293,6 +1414,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   rider?: boolean | Prisma.Order$riderArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
   payment?: boolean | Prisma.Order$paymentArgs<ExtArgs>
+  weightAuditLog?: boolean | Prisma.Order$weightAuditLogArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
 
 export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1355,6 +1477,7 @@ export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   rider?: boolean | Prisma.Order$riderArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
   payment?: boolean | Prisma.Order$paymentArgs<ExtArgs>
+  weightAuditLog?: boolean | Prisma.Order$weightAuditLogArgs<ExtArgs>
 }
 export type OrderIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -1377,6 +1500,7 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     rider: Prisma.$RiderPayload<ExtArgs> | null
     address: Prisma.$AddressPayload<ExtArgs>
     payment: Prisma.$PaymentPayload<ExtArgs> | null
+    weightAuditLog: Prisma.$WeightAuditLogPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1790,6 +1914,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   rider<T extends Prisma.Order$riderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$riderArgs<ExtArgs>>): Prisma.Prisma__RiderClient<runtime.Types.Result.GetResult<Prisma.$RiderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   address<T extends Prisma.AddressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AddressDefaultArgs<ExtArgs>>): Prisma.Prisma__AddressClient<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   payment<T extends Prisma.Order$paymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$paymentArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  weightAuditLog<T extends Prisma.Order$weightAuditLogArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$weightAuditLogArgs<ExtArgs>>): Prisma.Prisma__WeightAuditLogClient<runtime.Types.Result.GetResult<Prisma.$WeightAuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2267,6 +2392,25 @@ export type Order$paymentArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.PaymentInclude<ExtArgs> | null
   where?: Prisma.PaymentWhereInput
+}
+
+/**
+ * Order.weightAuditLog
+ */
+export type Order$weightAuditLogArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeightAuditLog
+   */
+  select?: Prisma.WeightAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WeightAuditLog
+   */
+  omit?: Prisma.WeightAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeightAuditLogInclude<ExtArgs> | null
+  where?: Prisma.WeightAuditLogWhereInput
 }
 
 /**

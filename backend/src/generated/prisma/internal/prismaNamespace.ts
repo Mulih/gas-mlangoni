@@ -404,7 +404,8 @@ export const ModelName = {
   InventoryStock: 'InventoryStock',
   Rider: 'Rider',
   Order: 'Order',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  WeightAuditLog: 'WeightAuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -420,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "customer" | "address" | "vendor" | "cylinderPrice" | "inventoryStock" | "rider" | "order" | "payment"
+    modelProps: "customer" | "address" | "vendor" | "cylinderPrice" | "inventoryStock" | "rider" | "order" | "payment" | "weightAuditLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1016,6 +1017,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WeightAuditLog: {
+      payload: Prisma.$WeightAuditLogPayload<ExtArgs>
+      fields: Prisma.WeightAuditLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WeightAuditLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WeightAuditLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>
+        }
+        findFirst: {
+          args: Prisma.WeightAuditLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WeightAuditLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>
+        }
+        findMany: {
+          args: Prisma.WeightAuditLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>[]
+        }
+        create: {
+          args: Prisma.WeightAuditLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>
+        }
+        createMany: {
+          args: Prisma.WeightAuditLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WeightAuditLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>[]
+        }
+        delete: {
+          args: Prisma.WeightAuditLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>
+        }
+        update: {
+          args: Prisma.WeightAuditLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.WeightAuditLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WeightAuditLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WeightAuditLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.WeightAuditLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeightAuditLogPayload>
+        }
+        aggregate: {
+          args: Prisma.WeightAuditLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWeightAuditLog>
+        }
+        groupBy: {
+          args: Prisma.WeightAuditLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WeightAuditLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WeightAuditLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WeightAuditLogCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1150,6 +1225,17 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const WeightAuditLogScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  measuredWeight: 'measuredWeight',
+  customerConfirmed: 'customerConfirmed',
+  recordedAt: 'recordedAt'
+} as const
+
+export type WeightAuditLogScalarFieldEnum = (typeof WeightAuditLogScalarFieldEnum)[keyof typeof WeightAuditLogScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1321,6 +1407,13 @@ export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1480,6 +1573,7 @@ export type GlobalOmitConfig = {
   rider?: Prisma.RiderOmit
   order?: Prisma.OrderOmit
   payment?: Prisma.PaymentOmit
+  weightAuditLog?: Prisma.WeightAuditLogOmit
 }
 
 /* Types for Logging */

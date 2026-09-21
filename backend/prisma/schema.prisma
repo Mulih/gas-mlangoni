@@ -227,8 +227,11 @@ model Order {
 
   payment Payment?
 
+  weightAuditLog WeightAuditLog?
+
   @@index([customerId])
   @@index([vendorId])
+
   @@map("orders")
 }
 
@@ -290,4 +293,15 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   CANCELLED
+}
+
+model WeightAuditLog {
+  id                String @id @default(uuid())
+  orderId           String @unique @map("order_id")
+  order             Order @relation(fields: [orderId], references: [id])
+  measuredWeight    Float @map("measured_weight")
+  customerConfirmed Boolean @default(true) @map("customer_confirmed")
+  recordedAt        DateTime @default(now()) @map("recorded_at")
+
+  @@map("weight_audit_logs")
 }

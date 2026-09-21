@@ -28,3 +28,7 @@ export const updateOrderStatusSchema = z.object({
 // totalAmount in createOrderSchema: clients says which order to pay for
 // not how much or to whaht number.
 export const initiatePaymentSchema = z.object({});
+
+export const confirmDeliverySchema = z.object({
+    measuredWeight: z.number().positive("measuredWeight must be greater than zero"),
+});

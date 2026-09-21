@@ -58,7 +58,8 @@ export const ModelName = {
   InventoryStock: 'InventoryStock',
   Rider: 'Rider',
   Order: 'Order',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  WeightAuditLog: 'WeightAuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -172,6 +173,17 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const WeightAuditLogScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  measuredWeight: 'measuredWeight',
+  customerConfirmed: 'customerConfirmed',
+  recordedAt: 'recordedAt'
+} as const
+
+export type WeightAuditLogScalarFieldEnum = (typeof WeightAuditLogScalarFieldEnum)[keyof typeof WeightAuditLogScalarFieldEnum]
 
 
 export const SortOrder = {

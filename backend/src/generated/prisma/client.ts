@@ -79,3 +79,8 @@ export type Order = Prisma.OrderModel
  * 
  */
 export type Payment = Prisma.PaymentModel
+/**
+ * Model WeightAuditLog
+ * 
+ */
+export type WeightAuditLog = Prisma.WeightAuditLogModel
