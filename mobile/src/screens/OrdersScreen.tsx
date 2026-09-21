@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, FlatList, ActivityIndicator, RefreshControl, Pressable } from "react-native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import type { MainTabParamList } from "../navigation/types";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { MainTabParamList, RootStackParamList } from "../navigation/types";
 import { useCustomer } from "../context/CustomerContext";
 import { api, ApiError } from "../api/client";
 import { colors } from "../theme/colors";
@@ -10,7 +12,10 @@ import { radius } from "../theme/radius";
 import { Card } from "../components/Card";
 import { StatusPill } from "../components/StatusPill";
 
-type Props = BottomTabScreenProps<MainTabParamList, "Orders">;
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<MainTabParamList, "Orders">,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 interface Order { id: string; brand: string; size: string; status: string; totalAmount: string; createdAt: string }
 
@@ -22,7 +27,7 @@ const STATUS_LABELS: Record<string, string> = {
   PAYOUT_RELEASED: "Delivered", COMPLETED: "Completed", CANCELLED: "Cancelled", REFUNDED: "Refunded",
 };
 
-export function OrdersScreen({}: Props) {
+export function OrdersScreen({ navigation }: Props) {
   const { customer } = useCustomer();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +43,8 @@ export function OrdersScreen({}: Props) {
     }
   }, [customer]);
 
+  useEffect(() => { loadOrders().finally(() => setLoading(false)); }, [loadOrders]);
+
   async function handleCancel(orderId: string) {
     try {
       await api.patch(`/orders/${orderId}/cancel`, {});
@@ -47,7 +54,7 @@ export function OrdersScreen({}: Props) {
     }
   }
 
-  useEffect(() => { loadOrders().finally(() => setLoading(false)); }, [loadOrders]);
+  
 
   if (loading) return <View style={styles.centered}><ActivityIndicator color={colors.primary} size="large" /></View>;
 
@@ -56,19 +63,22 @@ export function OrdersScreen({}: Props) {
       <Text style={styles.header}>My Orders</Text>
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <FlatList
+      style={{ flex: 1 }}
         data={orders}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={async () => { setRefreshing(true); await loadOrders(); setRefreshing(false); }} tintColor={colors.primary} />}
         ListEmptyComponent={<Text style={styles.emptyText}>No orders yet.</Text>}
         renderItem={({ item }) => (
-          <Card>
-            <View style={styles.cardTop}>
-              <Text style={styles.cardTitle}>{item.size} — {item.brand}</Text>
-              <Text style={styles.cardAmount}>KSh {item.totalAmount}</Text>
-            </View>
-            <StatusPill label={STATUS_LABELS[item.status] ?? item.status} status={item.status}/>
-            <Text style={styles.cardDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+          <Card style={styles.card}>
+            <Pressable onPress={() => item.status !== "PLACED" && navigation.navigate("Tracking", { orderId: item.id })}>
+              <View style={styles.cardTop}>
+                <Text style={styles.cardTitle}>{item.size} — {item.brand}</Text>
+                <Text style={styles.cardAmount}>KSh {item.totalAmount}</Text>
+              </View>
+              <StatusPill label={STATUS_LABELS[item.status] ?? item.status} status={item.status} />
+              <Text style={styles.cardDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+            </Pressable>
             {item.status === "PLACED" && (
               <Pressable style={styles.cancelButton} onPress={() => handleCancel(item.id)}>
                 <Text style={styles.cancelText}>Cancel Order</Text>
