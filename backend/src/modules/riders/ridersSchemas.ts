@@ -6,3 +6,5 @@ export const createRidersSchema = z.object({
     // consistent validation rule whenever a phone number is collected.
     phone: z.string().regex(/^\+254\d{9}$/, "phone must be the format +2547XXXXXXXX"),
 });
+
+export const RegisterPushTokenSchema = z.object({ pushToken: z.string().min(1) });
