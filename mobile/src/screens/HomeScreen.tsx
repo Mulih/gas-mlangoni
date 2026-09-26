@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Image } from "react-native";
 import type { CompositeScreenProps } from "@react-navigation/native";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -27,9 +27,7 @@ export function HomeScreen({ navigation }: Props) {
         <View style={{ flex: 1, backgroundColor: colors.white }}>
             <View style={styles.header}>
                 <Ionicons name="menu" size={24} color={colors.textPrimary} />
-                <Text style={styles.logo}>
-                    GAS <Text style={styles.logoAccent}>MLANGONI</Text>
-                </Text>
+                <Image source={require("../../assets/brand/logo.jpeg")} style={styles.logo} resizeMode="contain" />
                 <View>
                     <Ionicons name="notifications-outline" size={24} color={colors.textPrimary} />
                 </View>
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     quickAction: { flex: 1, alignItems: "center", gap: spacing[2], padding: spacing[3], borderWidth: 1, borderColor: colors.borderLight, borderRadius: radius.md },
     quickIcon: { fontSize: 24 },
     quickLabel: { fontSize: 11, fontWeight: "700", color: colors.textPrimary, textAlign: "center" },
-    logo: { fontSize: 18, fontWeight: "900", color: colors.textPrimary },
+    logo: { width: 240, height: 32 },
     logoAccent: { color: colors.primary },
     notificationDot: { position: "absolute", width: 7, height: 7, right: 1, top: 1, borderRadius: 4, backgroundColor: colors.primary },
 });
