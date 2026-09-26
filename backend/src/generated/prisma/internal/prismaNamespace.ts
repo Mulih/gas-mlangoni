@@ -1188,7 +1188,8 @@ export const RiderScalarFieldEnum = {
   id: 'id',
   name: 'name',
   phone: 'phone',
-  status: 'status'
+  status: 'status',
+  photoUrl: 'photoUrl'
 } as const
 
 export type RiderScalarFieldEnum = (typeof RiderScalarFieldEnum)[keyof typeof RiderScalarFieldEnum]

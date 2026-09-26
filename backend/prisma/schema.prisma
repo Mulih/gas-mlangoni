@@ -162,6 +162,7 @@ model Rider {
   // just messy data, it's a rider who silently never received a job.
   status RiderStatus @default(OFFLINE)
 
+  photoUrl String? @map("photo_url")
   orders Order[]
 
   @@map("riders")

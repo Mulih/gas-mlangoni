@@ -29,6 +29,7 @@ export type RiderMinAggregateOutputType = {
   name: string | null
   phone: string | null
   status: $Enums.RiderStatus | null
+  photoUrl: string | null
 }
 
 export type RiderMaxAggregateOutputType = {
@@ -36,6 +37,7 @@ export type RiderMaxAggregateOutputType = {
   name: string | null
   phone: string | null
   status: $Enums.RiderStatus | null
+  photoUrl: string | null
 }
 
 export type RiderCountAggregateOutputType = {
@@ -43,6 +45,7 @@ export type RiderCountAggregateOutputType = {
   name: number
   phone: number
   status: number
+  photoUrl: number
   _all: number
 }
 
@@ -52,6 +55,7 @@ export type RiderMinAggregateInputType = {
   name?: true
   phone?: true
   status?: true
+  photoUrl?: true
 }
 
 export type RiderMaxAggregateInputType = {
@@ -59,6 +63,7 @@ export type RiderMaxAggregateInputType = {
   name?: true
   phone?: true
   status?: true
+  photoUrl?: true
 }
 
 export type RiderCountAggregateInputType = {
@@ -66,6 +71,7 @@ export type RiderCountAggregateInputType = {
   name?: true
   phone?: true
   status?: true
+  photoUrl?: true
   _all?: true
 }
 
@@ -146,6 +152,7 @@ export type RiderGroupByOutputType = {
   name: string
   phone: string
   status: $Enums.RiderStatus
+  photoUrl: string | null
   _count: RiderCountAggregateOutputType | null
   _min: RiderMinAggregateOutputType | null
   _max: RiderMaxAggregateOutputType | null
@@ -174,6 +181,7 @@ export type RiderWhereInput = {
   name?: Prisma.StringFilter<"Rider"> | string
   phone?: Prisma.StringFilter<"Rider"> | string
   status?: Prisma.EnumRiderStatusFilter<"Rider"> | $Enums.RiderStatus
+  photoUrl?: Prisma.StringNullableFilter<"Rider"> | string | null
   orders?: Prisma.OrderListRelationFilter
 }
 
@@ -182,6 +190,7 @@ export type RiderOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   orders?: Prisma.OrderOrderByRelationAggregateInput
 }
 
@@ -193,6 +202,7 @@ export type RiderWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.RiderWhereInput | Prisma.RiderWhereInput[]
   name?: Prisma.StringFilter<"Rider"> | string
   status?: Prisma.EnumRiderStatusFilter<"Rider"> | $Enums.RiderStatus
+  photoUrl?: Prisma.StringNullableFilter<"Rider"> | string | null
   orders?: Prisma.OrderListRelationFilter
 }, "id" | "phone">
 
@@ -201,6 +211,7 @@ export type RiderOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RiderCountOrderByAggregateInput
   _max?: Prisma.RiderMaxOrderByAggregateInput
   _min?: Prisma.RiderMinOrderByAggregateInput
@@ -214,6 +225,7 @@ export type RiderScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Rider"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Rider"> | string
   status?: Prisma.EnumRiderStatusWithAggregatesFilter<"Rider"> | $Enums.RiderStatus
+  photoUrl?: Prisma.StringNullableWithAggregatesFilter<"Rider"> | string | null
 }
 
 export type RiderCreateInput = {
@@ -221,6 +233,7 @@ export type RiderCreateInput = {
   name: string
   phone: string
   status?: $Enums.RiderStatus
+  photoUrl?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutRiderInput
 }
 
@@ -229,6 +242,7 @@ export type RiderUncheckedCreateInput = {
   name: string
   phone: string
   status?: $Enums.RiderStatus
+  photoUrl?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutRiderInput
 }
 
@@ -237,6 +251,7 @@ export type RiderUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutRiderNestedInput
 }
 
@@ -245,6 +260,7 @@ export type RiderUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutRiderNestedInput
 }
 
@@ -253,6 +269,7 @@ export type RiderCreateManyInput = {
   name: string
   phone: string
   status?: $Enums.RiderStatus
+  photoUrl?: string | null
 }
 
 export type RiderUpdateManyMutationInput = {
@@ -260,6 +277,7 @@ export type RiderUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RiderUncheckedUpdateManyInput = {
@@ -267,6 +285,7 @@ export type RiderUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RiderCountOrderByAggregateInput = {
@@ -274,6 +293,7 @@ export type RiderCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
 }
 
 export type RiderMaxOrderByAggregateInput = {
@@ -281,6 +301,7 @@ export type RiderMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
 }
 
 export type RiderMinOrderByAggregateInput = {
@@ -288,6 +309,7 @@ export type RiderMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  photoUrl?: Prisma.SortOrder
 }
 
 export type RiderNullableScalarRelationFilter = {
@@ -320,6 +342,7 @@ export type RiderCreateWithoutOrdersInput = {
   name: string
   phone: string
   status?: $Enums.RiderStatus
+  photoUrl?: string | null
 }
 
 export type RiderUncheckedCreateWithoutOrdersInput = {
@@ -327,6 +350,7 @@ export type RiderUncheckedCreateWithoutOrdersInput = {
   name: string
   phone: string
   status?: $Enums.RiderStatus
+  photoUrl?: string | null
 }
 
 export type RiderCreateOrConnectWithoutOrdersInput = {
@@ -350,6 +374,7 @@ export type RiderUpdateWithoutOrdersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RiderUncheckedUpdateWithoutOrdersInput = {
@@ -357,6 +382,7 @@ export type RiderUncheckedUpdateWithoutOrdersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumRiderStatusFieldUpdateOperationsInput | $Enums.RiderStatus
+  photoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -395,6 +421,7 @@ export type RiderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   name?: boolean
   phone?: boolean
   status?: boolean
+  photoUrl?: boolean
   orders?: boolean | Prisma.Rider$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.RiderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["rider"]>
@@ -404,6 +431,7 @@ export type RiderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   name?: boolean
   phone?: boolean
   status?: boolean
+  photoUrl?: boolean
 }, ExtArgs["result"]["rider"]>
 
 export type RiderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -411,6 +439,7 @@ export type RiderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   name?: boolean
   phone?: boolean
   status?: boolean
+  photoUrl?: boolean
 }, ExtArgs["result"]["rider"]>
 
 export type RiderSelectScalar = {
@@ -418,9 +447,10 @@ export type RiderSelectScalar = {
   name?: boolean
   phone?: boolean
   status?: boolean
+  photoUrl?: boolean
 }
 
-export type RiderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "status", ExtArgs["result"]["rider"]>
+export type RiderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "status" | "photoUrl", ExtArgs["result"]["rider"]>
 export type RiderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.Rider$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.RiderCountOutputTypeDefaultArgs<ExtArgs>
@@ -438,6 +468,7 @@ export type $RiderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     name: string
     phone: string
     status: $Enums.RiderStatus
+    photoUrl: string | null
   }, ExtArgs["result"]["rider"]>
   composites: {}
 }
@@ -866,6 +897,7 @@ export interface RiderFieldRefs {
   readonly name: Prisma.FieldRef<"Rider", 'String'>
   readonly phone: Prisma.FieldRef<"Rider", 'String'>
   readonly status: Prisma.FieldRef<"Rider", 'RiderStatus'>
+  readonly photoUrl: Prisma.FieldRef<"Rider", 'String'>
 }
     
 
