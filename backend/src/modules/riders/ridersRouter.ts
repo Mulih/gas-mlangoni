@@ -23,7 +23,7 @@ ridersRouter.patch<{ riderId: string }>(
     async (req, res) => {
         const rider = await prisma.rider.update({
             where: { id: req.params.riderId },
-            data: { pushToken: req.params.pushToken },
+            data: { pushToken: req.body.pushToken },
         });
         res.json(rider);
     },
