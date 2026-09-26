@@ -73,9 +73,9 @@ export default function App() {
 
   if (!order) {
     return (
-      <view style={styles.container}>
+      <View style={styles.container}>
         <Text>No active job right now.</Text>
-      </view>
+      </View>
     );
   }
 

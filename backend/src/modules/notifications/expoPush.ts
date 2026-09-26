@@ -6,3 +6,4 @@ export async function sendPushNotification(pushToken: string, title: string, bod
         body: JSON.stringify({ to: pushToken, title, body }),
     });
 }
+

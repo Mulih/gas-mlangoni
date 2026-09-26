@@ -232,3 +232,11 @@ ordersRouter.patch<{ orderId: string }>(
         res.json(updated);
     },
 );
+
+ordersRouter.get<{ riderId: string }>("/riders/:riderId/current-order", async (req, res) => {
+    const order = await prisma.order.findFirst({
+        where: { riderId: req.params.riderId, status: { in: ["EN_ROUTE", "ASSIGNED"] } },
+        include: { customer: true, address: true },
+    });
+    res.json(order);
+});
