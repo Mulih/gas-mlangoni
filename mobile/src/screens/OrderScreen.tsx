@@ -8,6 +8,7 @@ import { PrimaryButton } from "../components/PrimaryButton";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import { radius } from "../theme/radius";
+import { Card } from "../components/Card";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Order">;
 
@@ -26,12 +27,19 @@ const DELIVERY_MODES = [
     { value: "SCHEDULED" as const, label: "Scheduled", description: "Choose a later time" },
 ];
 
+const SIZE_DESCRIPTIONS: Record<string, string> = {
+    "6kg": "Ideal for small homes",
+    "13kg": "Most popular",
+    "50kg": "For businesses",
+};
+
 export function OrderScreen({ navigation }: Props) {
     const { customer } = useCustomer();
     const [catalog, setCatalog] = useState<CatalogItem[]>([]);
     const [addresses, setAddresses] = useState<Address[]>([]);
     const [selectedItem, setSelectedItem] = useState<CatalogItem | null>(null);
     const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+    const [changingAddress, setChangingAddress] = useState(false);
     const [deliveryMode, setDeliveryMode] = useState<"ON_DEMAND" | "SCHEDULED">("ON_DEMAND");
     const [newEstateName, setNewEstateName] = useState("");
     const [loading, setLoading] = useState(true);
@@ -50,6 +58,7 @@ export function OrderScreen({ navigation }: Props) {
                 setCatalog(catalogData);
                 setAddresses(customerData.addresses);
                 if (customerData.addresses.length > 0) setSelectedAddressId(customerData.addresses[0].id);
+                else setChangingAddress(true);
             } catch (err) {
                 setError(err instanceof ApiError ? err.message: "Failed to load order options");
             } finally {
@@ -98,6 +107,7 @@ export function OrderScreen({ navigation }: Props) {
     if (loading) {
         return <View style={styles.centered}><ActivityIndicator color={colors.primary} size="large" /></View>;
     }
+    const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -109,11 +119,16 @@ export function OrderScreen({ navigation }: Props) {
                     const isSelected = selectedItem?.brand === item.brand && selectedItem?.size === item.size;
                     return (
                         <Pressable key={`${item.brand}-${item.size}`} style={[styles.option, isSelected && styles.optionSelected]} onPress={() => setSelectedItem(item)}>
-                            <View>
-                                <Text style={styles.optionSize}>{item.size} - {item.brand}</Text>
-                                <Text style={styles.optionStock}>{item.quantity} in stock</Text>
-                            </View>
-                            <Text style={styles.optionPrice}>Ksh {item.price}</Text>
+                            <Card style={[styles.option, isSelected && styles.optionSelected]}>
+                                <View style={[styles.radio, isSelected && styles.radioSelected]}>
+                                    {isSelected && <View style={styles.radioDot}/>}
+                                </View>
+                                <View style={styles.optionBody}>
+                                    <Text style={styles.optionSize}>{item.size} - {item.brand}</Text>
+                                    <Text style={styles.optionDescription}>{SIZE_DESCRIPTIONS[item.size] ?? `${item.quantity} in stock`}</Text>
+                                </View>
+                                <Text style={styles.optionPrice}>Ksh {item.price}</Text>
+                            </Card>
                         </Pressable>
                     );
                 })
@@ -121,26 +136,47 @@ export function OrderScreen({ navigation }: Props) {
 
             <Text style={styles.selectionTitle}>Delivery Mode</Text>
             {DELIVERY_MODES.map((mode) => (
-                <Pressable key={mode.value} style={[styles.option, deliveryMode === mode.value && styles.optionSelected]} onPress={() => setDeliveryMode(mode.value)}>
-                    <View>
-                        <Text style={styles.optionSize}>{mode.label}</Text>
-                        <Text style={styles.optionStock}>{mode.description}</Text>
-                    </View>
+                <Pressable key={mode.value} onPress={() => setDeliveryMode(mode.value)}>
+                    <Card style={[styles.option, deliveryMode === mode.value && styles.optionSelected]}>
+                        <View style={[styles.radio, deliveryMode === mode.value && styles.radioSelected]}>
+                            {deliveryMode === mode.value && <View style={styles.radioDot} />}
+                        </View>
+                        <View style={styles.optionBody}>
+                            <Text style={styles.optionSize}>{mode.label}</Text>
+                            <Text style={styles.optionDescription}>{mode.description}</Text>
+                        </View>
+                    </Card>
                 </Pressable>
             ))}
 
             <Text style={styles.selectionTitle}>Delivery Address</Text>
-            {addresses.map((address) => (
-                <Pressable key={address.id} style={[styles.option, selectedAddressId === address.id && styles.optionSelected]} onPress={() => setSelectedAddressId(address.id)}>
-                    <Text style={styles.optionSize}>{address.estateName}</Text>
-                </Pressable>
-            ))}
-            <View style={styles.addAddressRow}>
-                <TextInput style={styles.addAddressInput} placeholder="Add new estate/area" placeholderTextColor={colors.textMuted} value={newEstateName} onChangeText={setNewEstateName} />
-                <Pressable style={styles.addAddressButton} onPress={handleAddAddress}>
-                    <Text style={styles.addAddressButtonText}>Add</Text>
-                </Pressable>
-            </View>
+            {selectedAddress && !changingAddress ? (
+                <Card style={styles.addressRow}>
+                    <View>
+                        <Text style={styles.addressLabel}>Delivering to</Text>
+                        <Text style={styles.optionSize}>{selectedAddress.estateName}</Text>
+                    </View>
+                    <Pressable onPress={() => setChangingAddress(true)}>
+                        <Text style={styles.changeLink}>Change</Text>
+                    </Pressable>
+                </Card>
+            ) : (
+                <>
+                  {addresses.map((address) => (
+                    <Pressable key={address.id} onPress={() => {setSelectedAddressId(address.id); setChangingAddress(false); }}>
+                        <Card style={[styles.option, selectedAddressId === address.id && styles.optionSelected]}>
+                            <Text style={styles.optionSize}>{address.estateName}</Text>
+                        </Card>
+                    </Pressable>
+                  ))}
+                  <View style={styles.addAddressRow}>
+                    <TextInput style={styles.addAddressInput} placeholder="Add new estate/area" placeholderTextColor={colors.textMuted} value={newEstateName} onChangeText={setNewEstateName} />
+                    <Pressable style={styles.addAddressButton} onPress={handleAddAddress}>
+                        <Text style={styles.addAddressButtonText}>Add</Text>
+                    </Pressable>
+                  </View>
+                </>
+            )}
 
             {error ? <Text style={styles.error}>{error}</Text> : null}
 
@@ -155,15 +191,22 @@ const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: colors.white },
     content: { padding: spacing[5], paddingBottom: spacing[10] },
     centered: {flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.white },
-    selectionTitle: { fontSize: 16, fontWeight: "800", color: colors.textPrimary, marginTop: spacing[5], marginBottom: spacing[3] },
+    selectionTitle: { fontSize: 17, fontWeight: "800", color: colors.textPrimary, marginTop: spacing[5], marginBottom: spacing[3] },
     emptyText: { color: colors.textSecondary, fontSize: 14 },
-    option: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: spacing[4], borderWidth: 1, borderColor: colors.borderLight, borderRadius: radius.md, marginBottom: spacing[3] },
+    option: { flexDirection: "row", alignItems: "center", gap: spacing[3], marginBottom: spacing[3] },
     optionSelected: { borderColor: colors.primary, borderWidth: 2 },
-    optionSize: { fontSize: 15, fontWeight: "700", color: colors.primary },
-    optionStock: { fontSize: 12, color: colors.textSecondary, marginTop: 2 },
-    optionPrice: { fontSize: 15, fontWeight: "800", color: colors.primary },
+    optionBody: { flex: 1 },
+    optionSize: { fontSize: 15, fontWeight: "700", color: colors.textPrimary },
+    optionDescription: { fontSize: 12, color: colors.textSecondary, marginTop: 2 },
+    optionPrice: { fontSize: 16, fontWeight: "800", color: colors.primary },
+    radio: { width: 10, height: 10, borderRadius: 5, borderColor: colors.borderLight, alignItems: "center", justifyContent: "center" },
+    radioSelected: { borderColor: colors.primary },
+    radioDot: { width: 10, height: 10, borderRadius: 5, borderColor: colors.primary },
+    addressRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+    addressLabel: { fontSize: 11, color: colors.textSecondary, marginBottom: 2 },
+    changeLink: { color: colors.primary, fontWeight: "700", fontSize: 13 },
     addAddressRow: { flexDirection: "row", gap: spacing[2] },
-    addAddressInput: { flex: 1, borderWidth: 1, borderColor: colors.borderLight, borderRadius: radius.md, padding: spacing[3], fontSize: 14, color: colors.textPrimary },
+    addAddressInput: { flex: 1, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.borderLight, borderRadius: radius.md, padding: spacing[3], fontSize: 14, color: colors.textPrimary },
     addAddressButton: { paddingHorizontal: spacing[4], justifyContent: "center", backgroundColor: colors.black, borderRadius: radius.md },
     addAddressButtonText: { color: colors.white, fontWeight: "700" },
     error: { color: colors.error, marginTop: spacing[4], fontSize: 13 },

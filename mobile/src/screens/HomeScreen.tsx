@@ -35,7 +35,7 @@ export function HomeScreen({ navigation }: Props) {
         
 
             <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-                <Text style={styles.greeting}>Good Afternoon{customer?.name ? `, ${customer.name}` : ""} 👋</Text>
+                <Text style={styles.greeting}>Good Morning{customer?.name ? `, ${customer.name}` : ""} 👋</Text>
                 <Text style={styles.subtitle}>Clean energy. A safer home.</Text>
 
                 <View style={styles.heroCard}>
@@ -50,38 +50,39 @@ export function HomeScreen({ navigation }: Props) {
                     it depends on the dispatch/delivery backend
                 */}
                 <View style={styles.quickActions}>
-                    <QuickAction icon="🔥" label="Order Gas" onPress={() => navigation.navigate("Order")} />
-                    <QuickAction icon="📍" label="Track Order" />
-                    <QuickAction icon="📦" label="My Orders" />
+                    <QuickAction icon="flame" label="Order Gas" onPress={() => navigation.navigate("Order")} />
+                    <QuickAction icon="location" label="Track Order" />
+                    <QuickAction icon="cube" label="My Orders" />
                 </View>
             </ScrollView>
         </View>
     );
 }
 
-function QuickAction({ icon, label, onPress }: { icon: string; label: string; onPress?: () => void }) {
+function QuickAction({ icon, label, onPress }: { icon: keyof typeof Ionicons.glyphMap; label: string; onPress?: () => void }) {
     return (
         <Pressable style={styles.quickAction} onPress={onPress} disabled={!onPress}>
-            <Text style={styles.quickIcon}>{icon}</Text>
+            <View style={styles.quickIconBadge}>
+                <Ionicons name={icon} size={22} color={colors.primary} />
+            </View>
             <Text style={styles.quickLabel}>{label}</Text>
         </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
-    header: {flexDirection: "row", alignItems: "center", justifyContent: "space-between", height: 56, paddingHorizontal: spacing[5] },
+    header: {flexDirection: "row", alignItems: "center", justifyContent: "space-between", height: 64, paddingHorizontal: spacing[5] },
     container: { flex: 1, backgroundColor: colors.white },
     content: { padding: spacing[5] },
-    greeting: { fontSize: 22, fontWeight: "800", color: colors.textPrimary },
+    greeting: { fontSize: 24, fontWeight: "800", color: colors.textPrimary },
     subtitle: { color: colors.textSecondary, fontSize: 13, marginBottom: spacing[5] },
     heroCard: { backgroundColor: colors.blackDeep, borderRadius: radius.xl, padding: spacing[6], marginBottom: spacing[5] },
     heroLabel: { color: colors.textMuted, fontSize: 13, marginBottom: spacing[2] },
-    heroTitle: { color: colors.white, fontSize: 25, fontWeight: "800" },
+    heroTitle: { color: colors.white, fontSize: 26, fontWeight: "800" },
     quickActions: { flexDirection: "row", gap: spacing[3] },
-    quickAction: { flex: 1, alignItems: "center", gap: spacing[2], padding: spacing[3], borderWidth: 1, borderColor: colors.borderLight, borderRadius: radius.md },
-    quickIcon: { fontSize: 24 },
+    quickAction: { flex: 1, alignItems: "center", gap: spacing[2] },
+    quickIconBadge: { width: 52, height: 52, borderRadius: radius.md, backgroundColor: `${colors.primary}15`, alignItems: "center", justifyContent: "center" },
     quickLabel: { fontSize: 11, fontWeight: "700", color: colors.textPrimary, textAlign: "center" },
-    logo: { width: 240, height: 32 },
-    logoAccent: { color: colors.primary },
+    logo: { width: 170, height: 44 },
     notificationDot: { position: "absolute", width: 7, height: 7, right: 1, top: 1, borderRadius: 4, backgroundColor: colors.primary },
 });
