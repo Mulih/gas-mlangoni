@@ -1,7 +1,7 @@
  import { Router } from "express";
 import { prisma } from "../../lib/prisma";
 import { validate } from "../../middleware/validate";
-import { createRidersSchema } from "./ridersSchemas";
+import { createRidersSchema, RegisterPushTokenSchema } from "./ridersSchemas";
 
 export const ridersRouter = Router();
 
@@ -17,3 +17,14 @@ ridersRouter.post("/", validate(createRidersSchema), async (req, res) => {
     res.status(201).json(rider);
 });
 
+ridersRouter.patch<{ riderId: string }>(
+    "/:riderId/push-token",
+    validate(RegisterPushTokenSchema),
+    async (req, res) => {
+        const rider = await prisma.rider.update({
+            where: { id: req.params.riderId },
+            data: { pushToken: req.params.pushToken },
+        });
+        res.json(rider);
+    },
+);

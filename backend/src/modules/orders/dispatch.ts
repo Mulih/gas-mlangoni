@@ -1,5 +1,6 @@
 import { prisma } from "../../lib/prisma";
 import { assertValidTransition } from "./orderStateMachine";
+import { sendPushNotification } from "../notifications/expoPush";
 
 // called directly by the payment callback the instant escrow is confirmed
 export async function dispatchOrder(orderId: string) {
