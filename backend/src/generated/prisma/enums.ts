@@ -63,3 +63,11 @@ export const PaymentStatus = {
 } as const
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const OrderType = {
+  REFILL: 'REFILL',
+  NEW_CYLINDER: 'NEW_CYLINDER'
+} as const
+
+export type OrderType = (typeof OrderType)[keyof typeof OrderType]

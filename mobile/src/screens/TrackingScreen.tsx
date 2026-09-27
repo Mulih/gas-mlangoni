@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, TextInput } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, TextInput, Image, Pressable, Linking } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../navigation/types";
 import { api, ApiError } from "../api/client";
@@ -15,7 +15,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Tracking">;
 
 interface OrderWithRider {
     status: string;
-    rider: { name: string; phone: string } | null;
+    rider: { name: string; phone: string; photoUrl: string } | null;
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -73,9 +73,18 @@ export function TrackingScreen({ route }: Props) {
 
             {order.rider ? (
                 <Card>
-                    <Text style={styles.sectionLabel}>Your Rider</Text>
-                    <Text style={styles.riderName}>{order.rider.name}</Text>
-                    <Text style={styles.riderPhone}>{order.rider.phone}</Text>
+                    {order.rider.photoUrl ? (
+                        <Image source={{ uri: order.rider.photoUrl }} style={styles.riderPhoto} />
+                    ) : (
+                        <View style={[styles.riderPhoto, styles.riderPhotoPlaceholder]} />
+                    )}
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.sectionLabel}>Your Rider</Text>
+                        <Text style={styles.riderName}>{order.rider.name}</Text>
+                    </View>
+                    <Pressable>
+                        <Text style={styles.contactButtonText}>📞</Text>
+                    </Pressable>
                 </Card>
             ) : (
                 <Card><Text style={styles.waitingText}>Waiting for a rider to be assigned...</Text></Card>
@@ -111,9 +120,13 @@ const styles = StyleSheet.create({
     centered: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: colors.white },
     statusCard: { alignItems: "flex-start", gap: spacing[2] },
     statusLabel: { fontSize: 12, color: colors.textSecondary },
-    sectionLabel: { fontSize: 12, color: colors.textSecondary, marginBottom: spacing[2] },
+    riderCard: { flexDirection: "row", alignItems: "center", gap: spacing[3] },
+    riderPhoto: { width: 48, height: 48, borderRadius: 24 },
+    riderPhotoPlaceholder: { backgroundColor: colors.borderLight },
+    sectionLabel: { fontSize: 12, color: colors.textSecondary, marginBottom: 2 },
     riderName: { fontSize: 16, fontWeight: "700",color: colors.textPrimary },
-    riderPhone: { fontSize: 13, color: colors.textSecondary },
+    contactButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: `${colors.success}15`, alignItems: "center", justifyContent: "center" },
+    contactButtonText: { fontSize: 16 },
     waitingText: { color: colors.textSecondary, fontSize: 13 },
     helperText: { fontSize: 12, color: colors.textSecondary, marginBottom: spacing[3] },
     weightInput: { borderWidth: 1, borderColor: colors.borderLight, borderRadius: radius.md, padding: spacing[3], fontSize: 16, color: colors.textPrimary, marginBottom: spacing[3] },

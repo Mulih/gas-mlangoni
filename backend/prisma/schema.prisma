@@ -306,3 +306,8 @@ model WeightAuditLog {
 
   @@map("weight_audit_logs")
 }
+
+enum OrderType {
+  REFILL
+  NEW_CYLINDER
+}

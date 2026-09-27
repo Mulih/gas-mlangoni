@@ -8,6 +8,7 @@ export const createOrderSchema = z.object({
     brand: z.string().min(1),
     size: z.string().min(1),
     deliveryMode: z.enum(["ON_DEMAND", "SCHEDULED"]),
+    orderType: z.enum(["REFILL", "NEW_CYLINDER"]),
 });
 
 // Every OrderStatus value, listed explicitly rather than derived from
