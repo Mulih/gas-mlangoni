@@ -18,7 +18,7 @@ ordersRouter.post<{ customerId: string }>(
     validate(createOrderSchema),
     async (req, res) => {
         const { customerId } = req.params;
-        const { vendorId, addressId, brand, size, deliveryMode } = req.body;
+        const { vendorId, addressId, brand, size, deliveryMode, orderType } = req.body;
 
         // The ownership check the schema itself can't enforce, flagged when
         // we added addressId: confirm this address actually belongs to this
@@ -33,11 +33,13 @@ ordersRouter.post<{ customerId: string }>(
         // zone-based pricing gets built later; nothing else in this file needs to know about it
         const DELIVERY_FEE = 200;
 
+        const NEW_CYLINDER_SURCHAGE = 1500;
+
         // Pricing and stock, resolved entirely server-side
         let totalAmount;
         try {           
             const pricing = await resolveOrderPricing(vendorId, brand, size);
-            totalAmount = Number(pricing.totalAmount) + DELIVERY_FEE;
+            totalAmount = Number(pricing.totalAmount) + DELIVERY_FEE + (orderType === "NEW_CYLINDER" ? NEW_CYLINDER_SURCHAGE : 0);
         } catch (err) {
             if (err instanceof OrderPricingError) {
                 return res.status(400).json({ error: err.message });
