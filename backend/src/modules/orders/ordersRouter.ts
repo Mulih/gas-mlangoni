@@ -58,11 +58,14 @@ ordersRouter.post<{ customerId: string }>(
                 brand,
                 size,
                 deliveryMode,
+                orderType,
                 totalAmount,
                 // status isn't set here - @default(PLACED) is the only legal
                 // starting state, same reasoningas every other enum default
                 // in this schema.
+                
             },
+
         });
 
         res.status(201).json(order);
