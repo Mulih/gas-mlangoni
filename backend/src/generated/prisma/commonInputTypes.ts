@@ -264,6 +264,13 @@ export type EnumDeliveryModeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumDeliveryModeFilter<$PrismaModel> | $Enums.DeliveryMode
 }
 
+export type EnumOrderTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderTypeFilter<$PrismaModel> | $Enums.OrderType
+}
+
 export type EnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderStatus | Prisma.EnumOrderStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderStatus[] | Prisma.ListEnumOrderStatusFieldRefInput<$PrismaModel>
@@ -282,6 +289,16 @@ export type EnumDeliveryModeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDeliveryModeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDeliveryModeFilter<$PrismaModel>
+}
+
+export type EnumOrderTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderTypeWithAggregatesFilter<$PrismaModel> | $Enums.OrderType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrderTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrderTypeFilter<$PrismaModel>
 }
 
 export type EnumPaymentStatusFilter<$PrismaModel = never> = {
@@ -566,6 +583,13 @@ export type NestedEnumDeliveryModeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumDeliveryModeFilter<$PrismaModel> | $Enums.DeliveryMode
 }
 
+export type NestedEnumOrderTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderTypeFilter<$PrismaModel> | $Enums.OrderType
+}
+
 export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.OrderStatus | Prisma.EnumOrderStatusFieldRefInput<$PrismaModel>
   in?: $Enums.OrderStatus[] | Prisma.ListEnumOrderStatusFieldRefInput<$PrismaModel>
@@ -584,6 +608,16 @@ export type NestedEnumDeliveryModeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDeliveryModeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDeliveryModeFilter<$PrismaModel>
+}
+
+export type NestedEnumOrderTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderType | Prisma.EnumOrderTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderType[] | Prisma.ListEnumOrderTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderTypeWithAggregatesFilter<$PrismaModel> | $Enums.OrderType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrderTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrderTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumPaymentStatusFilter<$PrismaModel = never> = {

@@ -228,6 +228,8 @@ model Order {
 
   payment Payment?
 
+  orderType OrderType
+
   weightAuditLog WeightAuditLog?
 
   @@index([customerId])
