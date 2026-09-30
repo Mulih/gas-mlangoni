@@ -16,6 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Tracking">;
 interface OrderWithRider {
     status: string;
     rider: { name: string; phone: string; photoUrl: string } | null;
+    address: { estateName: string; gpsLat: number; gpsLng: number };
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -110,6 +111,15 @@ export function TrackingScreen({ route }: Props) {
             {order.status === " DELIVERED" && (
                 <Card style={styles.successCard}><Text style={styles.successText}>Delivered ✓</Text></Card>
             )}
+            <Card style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <View>
+                    <Text style={styles.sectionLabel}>Delivering to</Text>
+                    <Text style={styles.sectionLabel}>{order.address.estateName}</Text>
+                </View>
+                <Pressable onPress={() => Linking.openURL(`geo:${order.address.gpsLat},${order.address.gpsLng}?q=${order.address.gpsLat},${order.address.gpsLng}`)}>
+                    <Text style={{ color: colors.primary, fontWeight: "700", fontSize: 13 }}>View on Map</Text>
+                </Pressable>
+            </Card>
 
         </View>
     );

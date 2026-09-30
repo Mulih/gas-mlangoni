@@ -107,7 +107,7 @@ export function OrderScreen({ navigation }: Props) {
         try {
             const order = await api.post<{ id: string; totalAmount: string }>(`/customers/${customer!.id}/orders`, {
                 vendorId: VENDOR_ID, addressId: selectedAddressId,
-                brand: selectedItem.brand, size: selectedItem.size, deliveryMode,
+                brand: selectedItem.brand, size: selectedItem.size, deliveryMode, orderType,
             });
             navigation.navigate("Payment", { orderId: order.id, totalAmount: order.totalAmount });
         } catch (err) {
