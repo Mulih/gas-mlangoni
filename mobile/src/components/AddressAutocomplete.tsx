@@ -44,7 +44,8 @@ export function AddressAutocomplete({ onSelect }: { onSelect: (result: { estateN
                         text: s.placePrediction.text.text,
                     })),
                 );
-            } catch {
+            } catch (err) {
+                console.error("Autcomplete request failed:", err);
                 setPredictions([]);
             } finally {
                 setLoading(false);
@@ -70,8 +71,8 @@ export function AddressAutocomplete({ onSelect }: { onSelect: (result: { estateN
             });
 
             sessionToken.current = uuid.v4() as string;
-        } catch {
-            // selection failed
+        } catch (err) {
+            console.error("Selection failed:", err);
         }
     }
 

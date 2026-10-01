@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import type { RootStackParamList } from "../navigation/types";
 import { useCustomer } from "../context/CustomerContext";
+import { AddressAutocomplete } from "../components/AddressAutocomplete";
 import { api, ApiError } from "../api/client";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { colors } from "../theme/colors";
@@ -44,7 +45,6 @@ export function OrderScreen({ navigation }: Props) {
     const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
     const [changingAddress, setChangingAddress] = useState(false);
     const [deliveryMode, setDeliveryMode] = useState<"ON_DEMAND" | "SCHEDULED">("ON_DEMAND");
-    const [newEstateName, setNewEstateName] = useState("");
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -71,31 +71,6 @@ export function OrderScreen({ navigation }: Props) {
         load();
     }, []);
 
-    async function handleAddAddress() {
-        if (!newEstateName.trim()) return;
-        setError(null);
-
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-            setError("Location permisstion is needed to add a delivery address");
-            return;
-        }
-
-        try {
-            const position = await Location.getCurrentPositionAsync({});
-            const address = await api.post<Address>(`/customers/${customer!.id}Address`, {
-                estateName: newEstateName,
-                gpsLat: position.coords.latitude,
-                gpsLng: position.coords.longitude,
-            });
-            setAddresses([...addresses, address]);
-            setSelectedAddressId(address.id);
-            setNewEstateName("");
-            setChangingAddress(false);
-        } catch (err) {
-            setError(err instanceof ApiError ? err.message : "Failed to add address");
-        }
-    }
 
     async function handlePlaceOrder() {
         if (!selectedItem || !selectedAddressId) {
@@ -193,12 +168,21 @@ export function OrderScreen({ navigation }: Props) {
                         </Card>
                     </Pressable>
                   ))}
-                  <View style={styles.addAddressRow}>
-                    <TextInput style={styles.addAddressInput} placeholder="Add new estate/area" placeholderTextColor={colors.textMuted} value={newEstateName} onChangeText={setNewEstateName} />
-                    <Pressable style={styles.addAddressButton} onPress={handleAddAddress}>
-                        <Text style={styles.addAddressButtonText}>Add</Text>
-                    </Pressable>
-                  </View>
+                  <AddressAutocomplete
+                      onSelect={async (result) => {
+                        try {
+                            const address = await api.post<Address>(
+                                `/customers/${customer!.id}/addresses`,
+                                result
+                            );
+                            setAddresses([...addresses, address]);
+                            setSelectedAddressId(address.id);
+                            setChangingAddress(false);
+                        } catch (err) {
+                            setError(err instanceof ApiError ? err.message : "Failed to add address");
+                        }
+                      }}
+                   />
                 </>
             )}
 
@@ -235,10 +219,6 @@ const styles = StyleSheet.create({
     addressRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
     addressLabel: { fontSize: 11, color: colors.textSecondary, marginBottom: 2 },
     changeLink: { color: colors.primary, fontWeight: "700", fontSize: 13 },
-    addAddressRow: { flexDirection: "row", gap: spacing[2] },
-    addAddressInput: { flex: 1, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.borderLight, borderRadius: radius.md, padding: spacing[3], fontSize: 14, color: colors.textPrimary },
-    addAddressButton: { paddingHorizontal: spacing[4], justifyContent: "center", backgroundColor: colors.black, borderRadius: radius.md },
-    addAddressButtonText: { color: colors.white, fontWeight: "700" },
     error: { color: colors.error, marginTop: spacing[4], fontSize: 13 },
     submitContainer: { marginTop: spacing[6] },
 });
