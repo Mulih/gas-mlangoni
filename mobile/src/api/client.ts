@@ -1,5 +1,9 @@
 import { API_BASE_URL } from "./config";
 
+let authToken: string | null = null;
+// called on login, on app restart (restore) and on logout (null)
+export function setAuthToken(token: string | null) { authToken = token; }
+
 export class ApiError extends Error {
     constructor(public status: number, message: string) {
         super(message);
@@ -7,10 +11,15 @@ export class ApiError extends Error {
     }
 }
 
+
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
     const response = await fetch(`${API_BASE_URL}${path}`, {
         ...options,
-        headers: { "Content-Type": "application/json", ...options?.headers },
+        headers: { 
+            "Content-Type": "application/json",
+            ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+             ...options?.headers },
     });
 
     const data = await response.json();
