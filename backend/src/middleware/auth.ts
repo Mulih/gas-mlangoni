@@ -1,13 +1,16 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const secret = process.env.JWT_SECRET;
 
 // Fail at startup, not on the first request - a missing secret  here
 // would otherwise let token verification behave unpredicatably instead
-if (!JWT_SECRET) {
+if (!secret) {
     throw new Error("JWT_SECRET is not set");
 }
+
+const JWT_SECRET: string = secret;
+
 export function signCustomerToken(customerId: string): string {
     // no expiry set - a current simplification, not an oversight.
     return jwt.sign(
