@@ -7,6 +7,7 @@ import { OrderScreen } from "./src/screens/OrderScreen";
 import { PaymentScreen } from "./src/screens/PaymentScreen";
 import { MainTabs } from "./src/navigation/MainTabs";
 import type { RootStackParamList } from "./src/navigation/types";
+import { useFonts, PlusJakartaSans_400Regular, PlusJakartaSans_500Medium, PlusJakartaSans_600SemiBold, PlusJakartaSans_700Bold, PlusJakartaSans_800ExtraBold } from "@expo-google-fonts/plus-jakarta-sans";
 import { TrackingScreen } from "./src/screens/TrackingScreen";
 
 
@@ -38,6 +39,11 @@ function Navigation() {
 }
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({ PlusJakartaSans_400Regular, PlusJakartaSans_500Medium, PlusJakartaSans_700Bold, PlusJakartaSans_800ExtraBold });
+  // Render nothing until fonts are ready, so text doesn't flash in the wrong font
+  if (!fontsLoaded) return null;
+
   return (
     <CustomerProvider>
       <Navigation />
