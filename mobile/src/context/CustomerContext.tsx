@@ -1,9 +1,11 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setAuthToken } from "../api/client";
 
 interface Customer {
     id: string;
     name?: string;
+    token?: string;
 }
 
 interface CustomerContextValue {
@@ -27,8 +29,15 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
   // before we decide which screen to open on.
   useEffect(() => {
     AsyncStorage.getItem(STORAGE_KEY)
-      .then((stored) => {
-        if (stored) setCustomerState(JSON.parse(stored));
+      .then(async (stored) => {
+        if (!stored) return;
+        const parsed: Customer = JSON.parse(stored);
+        if (parsed.token) {
+          setAuthToken(parsed.token);
+          setCustomerState(parsed);
+        } else {
+          await AsyncStorage.removeItem(STORAGE_KEY);
+        }
       })
       .catch((err) => {
         console.error("Failed to load stored customer:", err);
@@ -40,13 +49,17 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
   // Without it, state would reset to null every time the app fully 
   // restarts, regardless of anything else.
   async function setCustomer(newCustomer: Customer) {
+    
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newCustomer));
     setCustomerState(newCustomer);
+    
   }
 
   async function logout() {
+    setAuthToken(null);
     await AsyncStorage.removeItem(STORAGE_KEY);
     setCustomerState(null);
+    
   }
 
   return <CustomerContext.Provider value={{ customer, isLoading, setCustomer, logout }}>{children}</CustomerContext.Provider>;

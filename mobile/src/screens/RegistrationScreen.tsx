@@ -32,8 +32,12 @@ export function RegistrationScreen({ navigation }: Props) {
 
         setLoading(true);
         try {
-            const customer = await api.post<{ id: string }>("/customers", { phone, name: name || undefined });
-            await setCustomer(customer);
+            const response = await api.post<{ id: string; name: string | null; token: string }>("/customers", { phone, name: name || undefined });
+            await setCustomer({
+                id: response.id,
+                name: response.name ?? undefined,
+                token: response.token,
+            });
             navigation.replace("Main");
         } catch (err) {
             setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");

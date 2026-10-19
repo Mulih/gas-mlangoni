@@ -114,7 +114,7 @@ export function OrderScreen({ navigation }: Props) {
                 catalog.map((item) => {
                     const isSelected = selectedItem?.brand === item.brand && selectedItem?.size === item.size;
                     return (
-                        <Pressable key={`${item.brand}-${item.size}`} style={[styles.option, isSelected && styles.optionSelected]} onPress={() => setSelectedItem(item)}>
+                        <Pressable key={`${item.brand}-${item.size}`} onPress={() => setSelectedItem(item)}>
                             <Card style={[styles.option, isSelected && styles.optionSelected]}>
                                 <View style={styles.optionIconBadge}>
                                     <Ionicons name="flame" size={20} color={colors.primary} />
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     optionSize: { fontSize: 15, fontWeight: "700", color: colors.textPrimary },
     optionDescription: { fontSize: 12, color: colors.textSecondary },
     optionPrice: { fontSize: 15, fontWeight: "800", color: colors.primary },
-    radio: { width: 20, height: 20, borderRadius: 10, borderColor: colors.borderLight, alignItems: "center", justifyContent: "center" },
+    radio: { width: 20, height: 20, borderRadius: 10, borderColor: colors.borderLight, alignItems: "center", justifyContent: "center", borderWidth: 2 },
     radioSelected: { borderColor: colors.primary },
     radioDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: colors.primary },
     addressRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },

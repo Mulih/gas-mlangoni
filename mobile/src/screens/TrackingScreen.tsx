@@ -88,7 +88,7 @@ export function TrackingScreen({ route }: Props) {
                     </Pressable>
                 </Card>
             ) : (
-                <Card><Text style={styles.waitingText}>Waiting for a rider to be assigned...</Text></Card>
+                <Card style={styles.riderCard}><Text style={styles.waitingText}>Waiting for a rider to be assigned...</Text></Card>
             )}
 
             {order.status === "EN_ROUTE" && (
@@ -108,7 +108,7 @@ export function TrackingScreen({ route }: Props) {
                 </Card>
             )}
 
-            {order.status === " DELIVERED" && (
+            {order.status === "DELIVERED" && (
                 <Card style={styles.successCard}><Text style={styles.successText}>Delivered ✓</Text></Card>
             )}
             <Card style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>

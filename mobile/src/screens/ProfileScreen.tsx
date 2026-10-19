@@ -48,7 +48,7 @@ export function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({ 
-    container: { flex: 1, alignItems: "center", justifyContent: "center" }, 
+    container: { flex: 1, padding: spacing[5], backgroundColor: colors.white }, 
     header: { fontSize: 22, fontWeight: "800", color: colors.textPrimary, marginBottom: spacing[5] },
     card: { backgroundColor: colors.whiteSoft, borderRadius: radius.lg, padding: spacing[5], marginBottom: spacing[5] },
     name: { fontSize: 18, fontWeight: "700", color: colors.textPrimary },
