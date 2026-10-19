@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { prisma } from "../../lib/prisma";
 import { validate } from "../../middleware/validate";
+import { requireAuth, requireCustomerMatch, signCustomerToken } from "../../middleware/auth";
 import { createCustomerSchema, createAddressSchema } from "./customersSchema";
 
 export const customersRouter = Router();
@@ -8,7 +9,7 @@ export const customersRouter = Router();
 // GET /customers/:customerId - fetch one customer, including all of their
 // saved addresses. First query in this project that reads across a
 // relation, not just a single table.
-customersRouter.get("/:customerId", async (req, res) => {
+customersRouter.get("/:customerId", requireAuth, requireCustomerMatch, async (req, res) => {
     // Express pulls the ":customerId" part of the URL into req.params,
     // always as a string, regardless of what it looks like.
     const { customerId } = req.params;
@@ -66,16 +67,16 @@ customersRouter.post<{ customerId: string }>(
 customersRouter.post("/", validate(createCustomerSchema), async (req, res) => {
     const { phone, name } = req.body;
 
-    if (typeof phone !== "string" || phone.length === 0) {
-        return res.status(400).json({ error: "phone is required" })
-    }
+    // if (typeof phone !== "string" || phone.length === 0) {
+       // return res.status(400).json({ error: "phone is required" })
+    //}
 
     const customer = await prisma.customer.upsert({
         where: { phone },
         update: {},
         create: { phone, name },
     });
-
-    res.status(201).json(customer);
+    const token = signCustomerToken(customer.id);
+    res.status(201).json({ ...customer, token });
 });
 

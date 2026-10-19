@@ -5,11 +5,15 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Fail at startup, not on the first request - a missing secret  here
 // would otherwise let token verification behave unpredicatably instead
-if (!JWT_SECRET) throw new Error("JWT_SECRET is not set");
-
+if (!JWT_SECRET) {
+    throw new Error("JWT_SECRET is not set");
+}
 export function signCustomerToken(customerId: string): string {
     // no expiry set - a current simplification, not an oversight.
-    return jwt.sign({ customerId }, JWT_SECRET);
+    return jwt.sign(
+        { customerId },
+        JWT_SECRET as string,
+    { expiresIn: '30d' });
 }
 
 // 
