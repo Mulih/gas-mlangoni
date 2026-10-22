@@ -1,4 +1,5 @@
 import express from "express";
+import { requestId } from "./middleware/requestId";
 import { customersRouter } from "./modules/customers/customersRouter";
 import { vendorsRouter } from "./modules/vendors/vendorsRouter";
 import { cylinderPricesRouter } from "./modules/cylinderPrices/cylinderPricesRouter";
@@ -8,11 +9,13 @@ import { paymentsRouter } from "./modules/payments/paymentsRouter";
 
 
 
-const app = express();
-const port = 3000;
+const app = express(); // web server
+const port = 3000;  // the port it listens on
 
 
-app.use(express.json());
+app.use(express.json()); // read JSON request bodies
+app.use(requestId); // every route gets an id
+
 app.use("/customers", customersRouter);
 app.use("/vendors", vendorsRouter);
 app.use("/cylinder-prices", cylinderPricesRouter);
@@ -20,8 +23,13 @@ app.use("/riders", ridersRouter);
 app.use(ordersRouter);
 app.use("/payments", paymentsRouter);
 
+app.get("/health", (req, res) => {
+    res.json({ status: "ok" });
+});
+
 app.use(
     (err: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+        const rid = req.requestId;
         // Prisma database errors carry a "code"
         if (
             err &&
@@ -32,19 +40,17 @@ app.use(
         ) {
             const prismaErr = err as { code: string; meta?: unknown};
             // Logged in full server-side 
-            console.error("Prisma error:", prismaErr.code, prismaErr.meta);
+            console.error(`[${rid}] Prisma error:`, prismaErr.code, prismaErr.meta);
 
             return res.status(400).json({ error: prismaErr.code, meta: prismaErr.meta });
         }
 
-        console.error(" Unexpected error:", err);
-        res.status(500).json({error: "Internal server error" });
+        console.error(`[${rid}] Unexpected error:`, err);
+        res.status(500).json({error: "Internal server error", requestId: rid  });
     },
 );
 
-app.get("/health", (req, res) => {
-    res.json({ status: "ok" });
-});
+
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
