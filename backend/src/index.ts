@@ -1,3 +1,4 @@
+import "./instrument";
 import express from "express";
 import { requestId } from "./middleware/requestId";
 import { customersRouter } from "./modules/customers/customersRouter";

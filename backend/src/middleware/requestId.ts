@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import type { Request, Response, NextFunction } from "express";
+import * as Sentry from "@sentry/node";
 
 declare global {
     namespace Express {
@@ -13,7 +14,8 @@ declare global {
 export function requestId(req: Request, res: Response, next: NextFunction) {
     // Reuse the id the app sent so both sides share it; otherwise make a new one
     const id = (req.headers["x-request-id"] as string | undefined) ?? randomUUID();
-    req.requestId = id;     // available to every later handler
+    // req.requestId = id;     // available to every later handler
+    Sentry.setTag("request_id", id);
     res.setHeader("x-request-id", id);  // send it back so the app can read it
     next();             // continue to the next middleware or route
 }

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
+import * as Sentry from "@sentry/node";
 
 const secret = process.env.JWT_SECRET;
 
@@ -35,7 +36,8 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
     try {
         const payload = jwt.verify(header.slice(7), JWT_SECRET) as { customerId: string };
-        req.customerId = payload.customerId;
+        // req.customerId = payload.customerId;
+        Sentry.setUser({ id: payload.customerId });
         next();
     } catch {
         return res.status(401).json({ error: "Invalid or expired token" });

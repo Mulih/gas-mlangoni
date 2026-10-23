@@ -3,6 +3,7 @@ import { prisma } from "../../lib/prisma";
 import { darajaCallbackSchema } from "./paymentsSchemas";
 import { assertValidTransition } from "../orders/orderStateMachine";
 import { dispatchOrder } from "../orders/dispatch";
+import * as Sentry from "@sentry/node";
 
 export const paymentsRouter = Router();
 
@@ -20,7 +21,8 @@ paymentsRouter.post("/callback", async (req, res) => {
     try {
         const parsed = darajaCallbackSchema.safeParse(req.body);
         if (!parsed.success) {
-            console.error("Unrecognized Daraja callback shape:", JSON.stringify(req.body));
+            // console.error("Unrecognized Daraja callback shape:", JSON.stringify(req.body));
+            Sentry.captureMessage("Unrecognized Daraja callback shape", "error");
             return acknowledge();
         }
 
@@ -75,7 +77,8 @@ paymentsRouter.post("/callback", async (req, res) => {
             await prisma.payment.update({ where: { id: payment.id }, data: { status } });
         }
     } catch(err) {
-        console.error("Error processing Daraja callback:", err);
+        // console.error("Error processing Daraja callback:", err);
+        Sentry.captureException(err);
     }
 
     return acknowledge();
