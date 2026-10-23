@@ -14,6 +14,6 @@ export const type = {
     heading: { fontFamily: fonts.bold, fontSize: 17, lineHeight: 22 }, // section headers
     body: { fontFamily: fonts.regular, fontSize: 14, lineHeight: 20 }, // normal text
     label: { fontFamily: fonts.semiBold, fontSize: 14, lineHeight: 18 }, // buttons, list labels
-    caption: { fontFamily: fonts.medium, fontSize: 11, lineheight: 14 }, // timestamps, hints
+    caption: { fontFamily: fonts.medium, fontSize: 11, lineHeight: 14 }, // timestamps, hints
     price: { fontFamily: fonts.extraBold, fontSize: 15, lineHeight: 20 }, // KSh amounts
 } as const;

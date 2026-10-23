@@ -2,7 +2,7 @@ export const colors = {
     primary: "#FF0000",
     primaryDark: "#D90000",
     primaryLight: "#FF3333",
-    primaryTint: "FFF1F1",
+    primaryTint: "#FFF1F1",
     black: "#111111",
     blackSoft: "#1A1A1A",
     blackDeep: "#080808",
