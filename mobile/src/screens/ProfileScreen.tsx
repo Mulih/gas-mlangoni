@@ -1,5 +1,5 @@
 // Core building blocks: View = box, Text = all text, Pressable = tappable, Alert = native popup, ScrollView = scrolls if content is tall.
-import { View, Text, StyleSheet, Pressable, Alert, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Pressable, Alert, ScrollView, Linking } from "react-native";
 // Keeps content below the notch / status bar (react-native's own SafeAreaView is deprecated).
 import { SafeAreaView } from "react-native-safe-area-context";
 // Icon set already used in MainTabs.tsx.
@@ -14,6 +14,62 @@ import { spacing } from "../theme/spacing";
 import { radius } from "../theme/radius";
 import { fonts, type } from "../theme/typography";
 
+
+// only real Ionicons names are allowed
+type IconName = keyof typeof Ionicons.glyphMap;
+
+// Describes one tappable row in a menu
+interface MenuEntry {
+    key: string;        // Unique id to allow React to track the row between renders
+    label: string;      // main text on the left
+    detail?: string;    
+    icon:   IconName;   // icon shown in the tinted tile
+    onPress?: () => void; // action on tap
+}
+
+// Describes a titled group of rows
+interface MenuSection {
+    title: string;  // heading
+    items: MenuEntry[]; // rows
+}
+
+// Placeholder number - TBD: replace with real support when we acquire one
+const SUPPORT_PHONE = "0700 000 000";
+
+// Stand-in for features that don't exist yet
+function comingSoon(feature: string) {
+    Alert.alert(feature, "This feature is coming soon.");
+}
+
+// Open the phone dialer with the support number filled in
+function callSupport() {
+    const digits = SUPPORT_PHONE.replace(/\s/g, "");
+    Linking.openURL(`tel:${digits}`).catch(() =>
+        Alert.alert("Call support", `Call us on ${SUPPORT_PHONE}`)
+    );
+}
+
+// Menu content lives outside the component so it isn't rebuilt on every render.
+const MENU_SECTIONS: MenuSection[] = [
+    {
+        title: "Account",
+        items: [
+            // M-Pesa is the only payment method for now;
+            { key: "payment", label: "Payment methods", detail: "M-Pesa", icon: "card-outline", onPress: () => comingSoon("Payment methods") },
+            { key: "notifications", label: "Notifications", detail: "Coming soon", icon: "notifications-outline" }, 
+        ],
+    },
+    {
+        title: "Help",
+        items: [
+            // Tapping dials support.
+            { key: "support", label: "Call support", detail: SUPPORT_PHONE, icon: "call-outline", onPress: callSupport },
+            // TBD: About page
+            { key: "about", label: "About Gas Mlangoni", icon: "information-circle-outline", onPress: () => comingSoon("About Gas Mlangoni") },
+        ]
+    }
+]
+
 // Turns "Alvin Mulih" into "AM"; falls back to "G" when there is no name.
 function getInitials(name?: string) {
     const initials = (name ?? "")   // use "" if name is undefined, so .trim() can't crash
@@ -25,6 +81,36 @@ function getInitials(name?: string) {
         .slice(0, 2)                // keep at most two letters
         .toUpperCase();             // make them capitals
     return initials || "G";         // empty result -> "G" for Gas
+}
+
+// One row inside a section card.
+function MenuRow({ item, isLast }: { item: MenuEntry; isLast: boolean }) {
+    const disabled = !item.onPress;  // no action == unavailable row
+    return (
+        <Pressable
+            onPress={item.onPress}
+            disabled={disabled}
+            android_ripple={{ color: colors.borderLight }}
+            style={({ pressed }) => [
+                styles.row,
+                !isLast && styles.rowDivider,
+                pressed && styles.rowPressed,
+            ]}
+        >
+            {/* Soft red tile gives every icon the same anchor on the left. */}
+            <View style={styles.iconTile}>
+                <Ionicons name={item.icon} size={20} color={colors.primary} />
+            </View>
+            {/* flex: 1 pushes detail + chevron to the right edge */}
+            <Text style={[styles.rowLabel, disabled && styles.rowLabelDisabled]} numberOfLines={1}>
+                {item.label}
+            </Text>
+            {/* Render the detail text only if this row has one */}
+            {item.detail ? <Text style={styles.rowDetail}>{item.detail}</Text> : null}
+            {/* hide chevron on unavailable rows. */}
+            {!disabled ? <Ionicons name="chevron-forward" size={18} color={colors.textMuted} /> : null}
+        </Pressable>
+    );
 }
 
 export function ProfileScreen() {
@@ -71,6 +157,19 @@ export function ProfileScreen() {
                     </Pressable>
                 </Card>
 
+                {/* One titled card per section; .map turns the data into UI */}
+                {MENU_SECTIONS.map((section) => (
+                    <View key={section.title} style={styles.section}>
+                        <Text style={styles.sectionTitle}>{section.title}</Text>
+                        <Card style={styles.sectionCard}>
+                            {section.items.map((item, index) => (
+                                // Passing key explicitly to avoid triggering React warning
+                                <MenuRow key={item.key} item={item} isLast={index === section.items.length - 1} />
+                            ))}
+                        </Card>
+                    </View>
+                ))}
+
                 {/* Outlined red logout button; style as a function so we can react to the pressed state */}
                 <Pressable
                     onPress={handleLogout}
@@ -88,6 +187,9 @@ const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: colors.white },                             // fill the screen, white page
     container: { padding: spacing[5], paddingBottom: spacing[10] },                   // 20px sides, extra bottom room above the tab bar
     header: { ...type.display, color: colors.textPrimary, marginBottom: spacing[5] }, // ...type.display copies font/size/lineHeight in
+    row: { flexDirection: "row", alignItems: "center", paddingVertical: spacing[3], paddingHorizontal: spacing[4] },
+    rowDivider: { borderBottomWidth: 1, borderBottomColor: colors.borderLight },
+    rowPressed: { backgroundColor: colors.whiteSoft },
 
     identityCard: { flexDirection: "row", alignItems: "center", marginBottom: spacing[6] }, // children side by side, vertically centered
     avatar: {
@@ -110,13 +212,30 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
     },
     badgeText: { fontFamily: fonts.bold, fontSize: 11, color: colors.success },       // small green text
-    editButton: { padding: spacing[2] },                                              // padding = bigger touch target
+    editButton: { padding: spacing[2] }, 
+    section: {marginBottom: spacing[5] },
+    sectionTitle: { ...type.label, color: colors.textSecondary, marginBottom: spacing[2], marginLeft: spacing[1] },
+    sectionCard: { padding: 0, overflow: "hidden" },
 
-    logoutButton: {
-        flexDirection: "row",               // icon and label side by side
+    iconTile: {
+        width: 36,
+        height: 36,
+        borderRadius: radius.sm,
+        backgroundColor: colors.primaryTint,
         alignItems: "center",
         justifyContent: "center",
-        gap: spacing[2],                    // space between icon and label
+        marginRight: spacing[3],
+    },
+    rowLabel: { ...type.label, flex: 1, color: colors.textPrimary },
+    rowLabelDisabled: { color: colors.textMuted },
+    rowDetail: { ...type.body, color: colors.textMuted, marginHorizontal: spacing[2] },
+
+    logoutButton: {
+        flexDirection: "row",               
+        alignItems: "center",
+        justifyContent: "center",
+        gap: spacing[2], 
+        marginTop: spacing[4],                   // space between icon and label
         minHeight: 48,                      // comfortable tap height
         borderRadius: radius.md,
         borderWidth: 1,                     // outline only...
