@@ -9,7 +9,7 @@ export const customersRouter = Router();
 // GET /customers/:customerId - fetch one customer, including all of their
 // saved addresses. First query in this project that reads across a
 // relation, not just a single table.
-customersRouter.get("/:customerId", requireAuth, requireCustomerMatch, async (req, res) => {
+customersRouter.get<{ customerId: string }>("/:customerId", requireAuth, requireCustomerMatch, async (req, res) => {
     // Express pulls the ":customerId" part of the URL into req.params,
     // always as a string, regardless of what it looks like.
     const { customerId } = req.params;

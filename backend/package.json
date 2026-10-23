@@ -23,15 +23,18 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
+    "@sentry/node": "^11.8.0",
+    "@sentry/profiling-node": "^11.8.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "zod": "^4.4.3"
   },
   "allowScripts": {
-    "@prisma/engines@7.10.0": true,
     "esbuild@0.28.2": true,
     "fsevents@2.3.3": true,
-    "prisma@7.10.0": true
+    "@prisma/engines@7.10.1": true,
+    "@sentry/node-cpu-profiler@2.4.4": true,
+    "prisma@7.10.1": true
   }
 }
