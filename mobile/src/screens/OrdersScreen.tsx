@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, StyleSheet, SectionList, ActivityIndicator, RefreshControl, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,13 +6,11 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { MainTabParamList, RootStackParamList } from "../navigation/types";
-import { useCustomer } from "../context/CustomerContext";
+import { useOrders } from "../hooks/useOrders";
 import { api, ApiError } from "../api/client";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import { radius } from "../theme/radius";
-import { Card } from "../components/Card";
-import { StatusPill } from "../components/StatusPill";
 import { type } from "../theme/typography";
 import  { OrderCard } from "../components/OrderCard";
 import { PrimaryButton } from "../components/PrimaryButton";
@@ -32,33 +30,16 @@ interface OrderSection {
 // Maps our 13 internal states to short customer-facing labels.
 
 export function OrdersScreen({ navigation }: Props) {
-  const { customer } = useCustomer();   // the logged-in customer
-  const [orders, setOrders] = useState<Order[]>([]);  // all orders from the server
-  const [loading, setLoading] = useState(true);   // true only for the very first load
+  // Orders, loading and error now come from the shared hook
+  const { orders, loading, error, setError, reload } = useOrders()  // all orders from the server
   const [refreshing, setRefreshing] = useState(false);  // true while pull-to-refresh runs
-  const [error, setError] = useState<string | null>(null);  // message to show in the banner, or null
   const [cancellingId, setCancellingId] = useState<string | null>(null); // which order is being cancelled right now
 
-
-  // Fetches the customer's orders. 
-  const loadOrders = useCallback(async () => {
-    if (!customer) return;    // no 
-    try {
-      setOrders(await api.get<Order[]>(`/customers/${customer!.id}/orders`)); // GET the list and store it
-      setError(null);   // success clears any old error
-    } catch (err) {
-      // Use the backend's message when there is one, otherwise a clear fallback.
-      setError(err instanceof ApiError ? err.message : "Failed to load orders");
-    }
-  }, [customer]);
-
-  // Load once when the screen opens; hide the spinner afterwards whether it worked or not.
-  useEffect(() => { loadOrders().finally(() => setLoading(false)); }, [loadOrders]);
-
+  
   // Pull-to-refresh handler.
   async function handleRefresh() {
     setRefreshing(true);    // show the pull spinner
-    await loadOrders();     // reload
+    await reload();     // reload through the hook
     setRefreshing(false);   // hide it
   }
 
@@ -66,9 +47,10 @@ export function OrdersScreen({ navigation }: Props) {
   async function cancelOrder(orderId: string) {
     setCancellingId(orderId);   // disables card's buttons so it can't be tapped twice
     try {
-      await api.patch(`/orders/${orderId}/cancel`, {});
-      await loadOrders();   // refresh so the order moves to "Past"
+      await api.patch(`/orders/${orderId}/cancel`, {});   // as the backend to cancel
+      await reload();   // refresh so the order moves to "Past"
     } catch (err) {
+      // Use the backend's message when we have one, otherwise a clear fallback.
       setError(err instanceof ApiError ? err.message : "Couldn't cancel the order. Please try again.");
     } finally {
       setCancellingId(null);  // finally runs on success AND failure
@@ -99,7 +81,7 @@ export function OrdersScreen({ navigation }: Props) {
   if (loading) return (<View style={styles.centered}><ActivityIndicator color={colors.primary} size="large" /></View>
 )
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.safeArea} edges={["top"]}>
       {/* Screen title */}
       <Text style={styles.header}>My orders</Text>
 
@@ -109,7 +91,7 @@ export function OrdersScreen({ navigation }: Props) {
           <Ionicons name="alert-circle" size={20} color={colors.error} />
           <Text style={styles.errorText}>{error}</Text>
           {/* Retry just reloads the list. */}
-          <Pressable onPress={loadOrders} hitSlop={8}>
+          <Pressable onPress={reload} hitSlop={8}>
             <Text style={styles.retryText}>Retry</Text>
           </Pressable>
         </View>
