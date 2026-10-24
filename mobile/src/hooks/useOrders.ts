@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { Alert } from "react-native";
 // Runs a function every time this screen comes into focus ( a tab is selected, or you navigate back to it).
 import { useFocusEffect } from "@react-navigation/native";
 import { useCustomer } from "../context/CustomerContext";
@@ -11,6 +12,7 @@ export function useOrders() {
     const [orders, setOrders] = useState<Order[]>([]);  // the loaded orders
     const [loading, setLoading] = useState(true);   // true only until the FIRST load finishes
     const [error, setError] = useState<string | null>(null);    // message to show, or null
+    const [cancellingId, setCancellingId] = useState<string | null>(null);  // which order is being cancelled right now
 
     // Fetches the orders. Never throws: failures go into `error`.
     const reload = useCallback(async () => {
@@ -31,6 +33,26 @@ export function useOrders() {
         }, [reload])
     );
 
+    async function cancelOrder(orderId: string) {
+        setCancellingId(orderId);
+        try {
+            await api.patch(`/orders/${orderId}/cancel`, {});       // cancel
+            await reload();         // refresh so the order moves to Past
+        } catch (err) {
+            setError(err instanceof ApiError ? err.message : "couldn't cancel the order. Please try again.");
+        } finally {
+            setCancellingId(null);      // runs on success AND failure
+        }
+    }
+
+    // cancelling confirmation since canceling can't be undone
+    function confirmCancel(orderId: string) {
+        Alert.alert("Cancel this order?", "This can't be undone.", [
+            { text: "Keep order", style: "cancel" },        // dismiss, do nothing
+            { text: "Cancel order", style: "destructive", onPress: () => cancelOrder(orderId) },    // red button, runs the cancel
+        ])
+    }
+
     // setError is return too, because the Orders screen reports cancel failures through it.
-    return { orders, loading, error, setError, reload };
+    return { orders, loading, error, cancellingId, reload, confirmCancel };
 }
