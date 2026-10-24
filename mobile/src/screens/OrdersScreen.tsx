@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { View, Text, StyleSheet, SectionList, ActivityIndicator, RefreshControl, Pressable, Alert } from "react-native";
+import { View, Text, StyleSheet, SectionList, ActivityIndicator, RefreshControl, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { CompositeScreenProps } from "@react-navigation/native";
@@ -7,7 +7,6 @@ import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { MainTabParamList, RootStackParamList } from "../navigation/types";
 import { useOrders } from "../hooks/useOrders";
-import { api, ApiError } from "../api/client";
 import { colors } from "../theme/colors";
 import { spacing } from "../theme/spacing";
 import { radius } from "../theme/radius";
@@ -31,9 +30,8 @@ interface OrderSection {
 
 export function OrdersScreen({ navigation }: Props) {
   // Orders, loading and error now come from the shared hook
-  const { orders, loading, error, setError, reload } = useOrders()  // all orders from the server
+  const { orders, loading, error, reload, cancellingId, confirmCancel } = useOrders()  // all orders from the server
   const [refreshing, setRefreshing] = useState(false);  // true while pull-to-refresh runs
-  const [cancellingId, setCancellingId] = useState<string | null>(null); // which order is being cancelled right now
 
   
   // Pull-to-refresh handler.
@@ -41,28 +39,6 @@ export function OrdersScreen({ navigation }: Props) {
     setRefreshing(true);    // show the pull spinner
     await reload();     // reload through the hook
     setRefreshing(false);   // hide it
-  }
-
-  // Actually cancels (called only after the customer confirms)
-  async function cancelOrder(orderId: string) {
-    setCancellingId(orderId);   // disables card's buttons so it can't be tapped twice
-    try {
-      await api.patch(`/orders/${orderId}/cancel`, {});   // as the backend to cancel
-      await reload();   // refresh so the order moves to "Past"
-    } catch (err) {
-      // Use the backend's message when we have one, otherwise a clear fallback.
-      setError(err instanceof ApiError ? err.message : "Couldn't cancel the order. Please try again.");
-    } finally {
-      setCancellingId(null);  // finally runs on success AND failure
-    }
-  }
-
-  // cancelling can't be undone, must ask first.
-  function handleCancel(orderId: string) {
-    Alert.alert("Cancel this order?", "This can't be undone.", [
-      { text: "Keep order", style: "cancel" },  // dismiss, do nothing
-      { text: "Cancel order", style: "destructive", onPress: () => cancelOrder(orderId) },  // red button, runs the cancel
-    ]);
   }
 
   // Split orders into Active and Past, newest first. useMemo will only recompute when `orders` changes.
@@ -112,7 +88,7 @@ export function OrdersScreen({ navigation }: Props) {
                 order ={item}
                 onTrack={(orderId) => navigation.navigate("Tracking", { orderId })}   // open tracking
                 onPay={(order) => navigation.navigate("Payment", { orderId: order.id, totalAmount: order.totalAmount })} // open payment
-                onCancel={handleCancel}     // confirm first
+                onCancel={confirmCancel}     // confirm first
                 cancelling={cancellingId === item.id}   // true only for the order being cancelled
             />
           )}
